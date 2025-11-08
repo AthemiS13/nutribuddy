@@ -14,7 +14,8 @@ interface MealLogFormProps {
 export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
-  const [mass, setMass] = useState('100');
+  const [mass, setMass] = useState('');
+  const [useFullRecipe, setUseFullRecipe] = useState(true);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -42,9 +43,11 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
       return;
     }
     
-    const massNum = parseFloat(mass);
-    if (isNaN(massNum) || massNum <= 0) {
-      setError('Please enter a valid mass');
+    // Use full recipe mass or custom mass
+    const massToLog = useFullRecipe ? selectedRecipe.totalMass : parseFloat(mass);
+    
+    if (isNaN(massToLog) || massToLog <= 0) {
+      setError('Please enter a valid amount');
       return;
     }
     
@@ -56,11 +59,12 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
         userId,
         selectedRecipe.id,
         selectedRecipe.name,
-        massNum,
+        massToLog,
         selectedRecipe.nutrientsPer100g
       );
       setSelectedRecipe(null);
-      setMass('100');
+      setMass('');
+      setUseFullRecipe(true);
       onSuccess();
     } catch (err: any) {
       setError(err.message || 'Failed to log meal');
@@ -72,14 +76,15 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
   const calculateNutrients = () => {
     if (!selectedRecipe) return null;
     
-    const massNum = parseFloat(mass) || 0;
-    const multiplier = massNum / 100;
+    const massToUse = useFullRecipe ? selectedRecipe.totalMass : (parseFloat(mass) || 0);
+    const multiplier = massToUse / 100;
     
     return {
       calories: selectedRecipe.nutrientsPer100g.calories * multiplier,
       protein: selectedRecipe.nutrientsPer100g.protein * multiplier,
       fats: selectedRecipe.nutrientsPer100g.fats * multiplier,
       carbohydrates: selectedRecipe.nutrientsPer100g.carbohydrates * multiplier,
+      mass: massToUse,
     };
   };
 
@@ -119,13 +124,15 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
             onChange={(e) => {
               const recipe = recipes.find((r) => r.id === e.target.value);
               setSelectedRecipe(recipe || null);
+              setUseFullRecipe(true);
+              setMass('');
             }}
             className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">Choose a recipe...</option>
             {recipes.map((recipe) => (
               <option key={recipe.id} value={recipe.id}>
-                {recipe.name} ({recipe.nutrientsPer100g.calories.toFixed(0)} kcal/100g)
+                {recipe.name} ({recipe.totalNutrients.calories.toFixed(0)} kcal total)
               </option>
             ))}
           </select>
@@ -133,43 +140,79 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
 
         {selectedRecipe && (
           <>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Amount (grams)
-              </label>
-              <input
-                type="number"
-                value={mass}
-                onChange={(e) => setMass(e.target.value)}
-                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="100"
-                min="0"
-                step="1"
-              />
+            <div className="space-y-3">
+              {/* Full Recipe Option */}
+              <button
+                type="button"
+                onClick={() => setUseFullRecipe(true)}
+                className={`w-full p-4 rounded-lg border-2 transition text-left ${
+                  useFullRecipe
+                    ? 'border-blue-600 bg-blue-600/10'
+                    : 'border-zinc-700 bg-zinc-800'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-semibold text-white">Full Recipe</span>
+                  <span className="text-sm text-zinc-400">{selectedRecipe.totalMass}g</span>
+                </div>
+                <div className="text-sm text-zinc-400">
+                  {selectedRecipe.totalNutrients.calories.toFixed(0)} kcal • {selectedRecipe.totalNutrients.protein.toFixed(0)}g protein
+                </div>
+              </button>
+
+              {/* Custom Amount Option */}
+              <button
+                type="button"
+                onClick={() => setUseFullRecipe(false)}
+                className={`w-full p-4 rounded-lg border-2 transition text-left ${
+                  !useFullRecipe
+                    ? 'border-blue-600 bg-blue-600/10'
+                    : 'border-zinc-700 bg-zinc-800'
+                }`}
+              >
+                <span className="font-semibold text-white">Custom Amount</span>
+              </button>
             </div>
 
+            {!useFullRecipe && (
+              <div>
+                <label className="block text-sm font-medium text-zinc-300 mb-2">
+                  Amount (grams)
+                </label>
+                <input
+                  type="number"
+                  value={mass}
+                  onChange={(e) => setMass(e.target.value)}
+                  className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  placeholder="Enter grams"
+                  min="0"
+                  step="1"
+                />
+              </div>
+            )}
+
             {nutrients && (
-              <div className="bg-gray-700 p-4 rounded-lg">
-                <h3 className="text-sm font-semibold text-gray-300 mb-2">
-                  Nutrition for {mass}g
+              <div className="bg-zinc-800 p-4 rounded-lg border border-zinc-700">
+                <h3 className="text-sm font-semibold text-zinc-300 mb-3">
+                  {useFullRecipe ? 'Full Recipe' : `${nutrients.mass}g`} Nutrition
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-gray-400 text-xs">Calories</p>
+                    <p className="text-zinc-400 text-xs">Calories</p>
                     <p className="text-white text-lg font-bold">
                       {nutrients.calories.toFixed(0)} kcal
                     </p>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-xs">Protein</p>
+                    <p className="text-zinc-400 text-xs">Protein</p>
                     <p className="text-white text-lg">{nutrients.protein.toFixed(1)}g</p>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-xs">Fats</p>
+                    <p className="text-zinc-400 text-xs">Fats</p>
                     <p className="text-white text-lg">{nutrients.fats.toFixed(1)}g</p>
                   </div>
                   <div>
-                    <p className="text-gray-400 text-xs">Carbs</p>
+                    <p className="text-zinc-400 text-xs">Carbs</p>
                     <p className="text-white text-lg">{nutrients.carbohydrates.toFixed(1)}g</p>
                   </div>
                 </div>

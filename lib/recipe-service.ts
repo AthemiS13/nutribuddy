@@ -56,10 +56,22 @@ export const createRecipe = async (
     const now = new Date().toISOString();
     const recipesRef = collection(db, 'users', userId, 'recipes');
     
+    // Clean ingredients to remove undefined fields
+    const cleanedIngredients = ingredients.map(item => {
+      const cleanItem: any = {
+        ingredient: item.ingredient,
+        mass: item.mass,
+      };
+      if (item.quantity !== undefined) {
+        cleanItem.quantity = item.quantity;
+      }
+      return cleanItem;
+    });
+    
     const recipeData = {
       userId,
       name,
-      ingredients,
+      ingredients: cleanedIngredients,
       totalNutrients,
       nutrientsPer100g,
       totalMass,
@@ -115,10 +127,22 @@ export const updateRecipe = async (
   try {
     const { totalNutrients, totalMass, nutrientsPer100g } = calculateNutrients(ingredients);
     
+    // Clean ingredients to remove undefined fields
+    const cleanedIngredients = ingredients.map(item => {
+      const cleanItem: any = {
+        ingredient: item.ingredient,
+        mass: item.mass,
+      };
+      if (item.quantity !== undefined) {
+        cleanItem.quantity = item.quantity;
+      }
+      return cleanItem;
+    });
+    
     const docRef = doc(db, 'users', userId, 'recipes', recipeId);
     await updateDoc(docRef, {
       name,
-      ingredients,
+      ingredients: cleanedIngredients,
       totalNutrients,
       nutrientsPer100g,
       totalMass,
