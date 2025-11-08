@@ -34,18 +34,21 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
   // Auto-search as user types
   useEffect(() => {
     const delayTimer = setTimeout(() => {
-      if (searchQuery.trim().length >= 2) {
+      if (searchQuery.trim().length >= 3) {
         handleSearch();
-      } else {
+      } else if (searchQuery.trim().length === 0) {
         setSearchResults([]);
       }
-    }, 500); // 500ms delay after user stops typing
+    }, 800); // Increased to 800ms to reduce API calls
 
     return () => clearTimeout(delayTimer);
   }, [searchQuery]);
 
   const handleSearch = async () => {
-    if (!searchQuery.trim()) return;
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
     
     setSearching(true);
     setError('');
@@ -55,13 +58,26 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
       setSearchResults(results);
     } catch (err: any) {
       setError(err.message || 'Failed to search ingredients');
+      setSearchResults([]);
     } finally {
       setSearching(false);
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSearch();
+    }
+  };
+
   const addIngredient = (ingredient: Ingredient) => {
-    setIngredients([...ingredients, { ingredient, mass: 100 }]);
+    const newIngredient: RecipeIngredient = {
+      ingredient,
+      mass: ingredient.servingSize || 100,
+      quantity: ingredient.servingSize ? 1 : undefined,
+    };
+    setIngredients([...ingredients, newIngredient]);
     setSearchQuery('');
     setSearchResults([]);
   };
@@ -69,6 +85,10 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
   const updateIngredientMass = (index: number, mass: number) => {
     const updated = [...ingredients];
     updated[index].mass = mass;
+    // Update quantity if serving size is available
+    if (updated[index].ingredient.servingSize) {
+      updated[index].quantity = mass / updated[index].ingredient.servingSize;
+    }
     setIngredients(updated);
   };
 
@@ -139,8 +159,9 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleKeyDown}
               className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:border-blue-500 focus:outline-none text-base"
-              placeholder="Type to search..."
+              placeholder="Type to search (press Enter)..."
             />
             {searching && (
               <div className="absolute right-3 top-1/2 -translate-y-1/2">

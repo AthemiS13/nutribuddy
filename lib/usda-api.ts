@@ -48,10 +48,11 @@ export const searchIngredients = async (query: string): Promise<Ingredient[]> =>
   }
 
   try {
+    // Search for foods - this is fast
     const response = await fetch(
       `${USDA_BASE_URL}/foods/search?api_key=${USDA_API_KEY}&query=${encodeURIComponent(
         query
-      )}&dataType=Foundation,SR Legacy&pageSize=25`,
+      )}&dataType=Foundation,SR Legacy,Survey (FNDDS)&pageSize=15`,
       {
         headers: {
           'Content-Type': 'application/json',
@@ -68,6 +69,7 @@ export const searchIngredients = async (query: string): Promise<Ingredient[]> =>
 
     const data: USDASearchResponse = await response.json();
 
+    // Map results immediately without fetching details (fast)
     const ingredients: Ingredient[] = data.foods.map((food) => {
       const nutrients = {
         calories: 0,
@@ -76,8 +78,8 @@ export const searchIngredients = async (query: string): Promise<Ingredient[]> =>
         carbohydrates: 0,
       };
 
-      food.foodNutrients.forEach((nutrient) => {
-        // Convert all values to per 100g
+      const foodNutrients = food.foodNutrients || [];
+      foodNutrients.forEach((nutrient: any) => {
         const valuePer100g = nutrient.value;
 
         switch (nutrient.nutrientId) {
@@ -102,20 +104,22 @@ export const searchIngredients = async (query: string): Promise<Ingredient[]> =>
         nutrients,
       };
 
-      // Extract serving size information from API only
+      // Extract serving size from search results if available
       if (food.servingSize && food.servingSizeUnit) {
         ingredient.servingSize = food.servingSize;
         ingredient.servingUnit = food.servingSizeUnit;
       } else if (food.foodPortions && food.foodPortions.length > 0) {
-        // Use the first portion as default serving
-        const portion = food.foodPortions[0];
-        ingredient.servingSize = portion.gramWeight;
-        ingredient.servingUnit = portion.modifier || 'serving';
+        const bestPortion = food.foodPortions.find((p: any) => 
+          p.modifier && p.gramWeight && !p.modifier.toLowerCase().includes('100')
+        ) || food.foodPortions[0];
+        
+        if (bestPortion && bestPortion.gramWeight) {
+          ingredient.servingSize = bestPortion.gramWeight;
+          ingredient.servingUnit = bestPortion.modifier || 'serving';
+        }
       }
 
-      // Cache the ingredient
       ingredientCache.set(food.fdcId, ingredient);
-
       return ingredient;
     });
 
