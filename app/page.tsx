@@ -91,22 +91,22 @@ export default function HomePage() {
 
   if (authLoading || (user && profileLoading)) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900">
-        <Loader2 className="w-12 h-12 animate-spin text-blue-500" />
+      <div className="min-h-screen flex items-center justify-center bg-neutral-950">
+        <Loader2 className="w-12 h-12 animate-spin text-neutral-400" />
       </div>
     );
   }
 
   if (!user) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-neutral-950 flex items-center justify-center p-4">
         <div className="w-full max-w-sm">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl p-6">
+          <div className="bg-neutral-900 border border-neutral-800 rounded-lg shadow-xl p-6">
             <div className="text-center mb-6">
               <div className="inline-flex items-center justify-center mb-3">
                 <img src="/nutrix.svg" alt="Nutrix Logo" className="w-96 h-96 brightness-0 invert" />
               </div>
-              <p className="text-zinc-400 text-sm">Track your nutrition, reach your goals</p>
+              <p className="text-neutral-400 text-sm">Track your nutrition, reach your goals</p>
             </div>
             <AuthForms />
           </div>
@@ -117,8 +117,8 @@ export default function HomePage() {
 
   if (!userProfile) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
-        <div className="w-full max-w-lg bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl p-6">
+      <div className="min-h-screen bg-neutral-950 flex items-center justify-center p-4">
+        <div className="w-full max-w-lg bg-neutral-900 border border-neutral-800 rounded-lg shadow-xl p-6">
           <ProfileSetup
             uid={user.uid}
             email={user.email || ''}
@@ -130,9 +130,9 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 pb-24">
+    <div className="min-h-screen bg-neutral-950 pb-24">
       {/* Header */}
-      <header className="bg-zinc-950 border-b border-zinc-800 sticky top-0 z-50">
+      <header className="bg-neutral-950 border-b border-neutral-800 sticky top-0 z-50">
         <div className="px-4 py-1">
           <div className="flex items-center justify-center">
             <img src="/nutrix.svg" alt="Nutrix" className="h-24 brightness-0 invert" />
@@ -157,10 +157,10 @@ export default function HomePage() {
           {currentView === 'recipes' && !editingRecipe && (
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold text-white">My Recipes</h2>
+                <h2 className="text-xl font-bold text-neutral-50">My Recipes</h2>
                 <button
                   onClick={() => setCurrentView('create-recipe')}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition font-medium text-sm"
+                  className="flex items-center gap-2 px-4 py-2 bg-neutral-700 hover:bg-neutral-600 text-neutral-50 rounded-lg transition font-medium text-sm"
                 >
                   <PlusCircle className="w-4 h-4" />
                   New
@@ -168,18 +168,18 @@ export default function HomePage() {
               </div>
 
               {recipes.length === 0 ? (
-                <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-8 text-center">
-                  <div className="w-12 h-12 bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-3">
-                    <BookOpen className="w-6 h-6 text-zinc-600" />
+                <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-8 text-center">
+                  <div className="w-12 h-12 bg-neutral-800 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <BookOpen className="w-6 h-6 text-neutral-400" />
                   </div>
-                  <h3 className="text-base font-semibold text-white mb-1">No recipes yet</h3>
-                  <p className="text-zinc-400 text-sm mb-4">Create your first recipe to get started</p>
+                  <h3 className="text-base font-semibold text-neutral-50 mb-1">No recipes yet</h3>
+                  <p className="text-neutral-400 text-sm mb-4">Create your first recipe to get started</p>
                   <button
                     onClick={() => {
                       setEditingRecipe(null);
                       setCurrentView('create-recipe');
                     }}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition text-sm"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-neutral-700 hover:bg-neutral-600 text-neutral-50 rounded-lg font-medium transition text-sm"
                   >
                     <PlusCircle className="w-4 h-4" />
                     Create Recipe
@@ -188,11 +188,11 @@ export default function HomePage() {
               ) : (
                 <div className="space-y-3">
                   {recipes.map((recipe) => (
-                    <div key={recipe.id} className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 hover:border-zinc-700 transition">
+                    <div key={recipe.id} className="bg-neutral-900 border border-neutral-800 rounded-lg p-4 hover:border-neutral-700 transition">
                       <div className="flex justify-between items-start mb-3">
                         <div>
-                          <h3 className="text-lg font-bold text-white">{recipe.name}</h3>
-                          <p className="text-zinc-500 text-xs">{recipe.totalMass}g total</p>
+                          <h3 className="text-lg font-bold text-neutral-50">{recipe.name}</h3>
+                          <p className="text-neutral-400 text-xs">{recipe.totalMass}g total</p>
                         </div>
                         <div className="flex gap-1">
                           <button
@@ -200,40 +200,40 @@ export default function HomePage() {
                               setEditingRecipe(recipe);
                               setCurrentView('create-recipe');
                             }}
-                            className="p-2 text-blue-400 hover:bg-zinc-800 rounded-lg transition"
+                            className="p-2 text-neutral-400 hover:bg-neutral-800 rounded-lg transition"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDeleteRecipe(recipe.id)}
-                            className="p-2 text-red-400 hover:bg-zinc-800 rounded-lg transition"
+                            className="p-2 text-red-400 hover:bg-neutral-800 rounded-lg transition"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
                       </div>
                       <div className="grid grid-cols-4 gap-2">
-                        <div className="bg-zinc-800 p-3 rounded-lg">
-                          <p className="text-zinc-500 text-xs font-medium mb-0.5">Cal</p>
-                          <p className="text-white text-lg font-bold">
+                        <div className="bg-neutral-800 p-3 rounded-lg">
+                          <p className="text-neutral-400 text-xs font-medium mb-0.5">Cal</p>
+                          <p className="text-neutral-50 text-lg font-bold">
                             {recipe.nutrientsPer100g.calories.toFixed(0)}
                           </p>
                         </div>
-                        <div className="bg-zinc-800 p-3 rounded-lg">
-                          <p className="text-zinc-500 text-xs font-medium mb-0.5">Protein</p>
-                          <p className="text-white text-lg font-bold">
+                        <div className="bg-neutral-800 p-3 rounded-lg">
+                          <p className="text-neutral-400 text-xs font-medium mb-0.5">Protein</p>
+                          <p className="text-neutral-50 text-lg font-bold">
                             {recipe.nutrientsPer100g.protein.toFixed(1)}g
                           </p>
                         </div>
-                        <div className="bg-zinc-800 p-3 rounded-lg">
-                          <p className="text-zinc-500 text-xs font-medium mb-0.5">Fats</p>
-                          <p className="text-white text-lg font-bold">
+                        <div className="bg-neutral-800 p-3 rounded-lg">
+                          <p className="text-neutral-400 text-xs font-medium mb-0.5">Fats</p>
+                          <p className="text-neutral-50 text-lg font-bold">
                             {recipe.nutrientsPer100g.fats.toFixed(1)}g
                           </p>
                         </div>
-                        <div className="bg-zinc-800 p-3 rounded-lg">
-                          <p className="text-zinc-500 text-xs font-medium mb-0.5">Carbs</p>
-                          <p className="text-white text-lg font-bold">
+                        <div className="bg-neutral-800 p-3 rounded-lg">
+                          <p className="text-neutral-400 text-xs font-medium mb-0.5">Carbs</p>
+                          <p className="text-neutral-50 text-lg font-bold">
                             {recipe.nutrientsPer100g.carbohydrates.toFixed(1)}g
                           </p>
                         </div>
@@ -276,14 +276,14 @@ export default function HomePage() {
       </div>
 
       {/* Bottom Navigation for Mobile */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-800 z-50">
+      <nav className="fixed bottom-0 left-0 right-0 bg-neutral-900 border-t border-neutral-800 z-50">
         <div className="grid grid-cols-4 gap-1 p-2 pb-3">
           <button
             onClick={() => setCurrentView('dashboard')}
             className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition ${
               currentView === 'dashboard'
-                ? 'bg-blue-600 text-white'
-                : 'text-zinc-400'
+                ? 'bg-neutral-700 text-neutral-50'
+                : 'text-neutral-400'
             }`}
           >
             <Home className="w-5 h-5" />
@@ -296,8 +296,8 @@ export default function HomePage() {
             }}
             className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition ${
               currentView === 'log-meal'
-                ? 'bg-blue-600 text-white'
-                : 'text-zinc-400'
+                ? 'bg-neutral-700 text-neutral-50'
+                : 'text-neutral-400'
             }`}
           >
             <PlusCircle className="w-5 h-5" />
@@ -310,8 +310,8 @@ export default function HomePage() {
             }}
             className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition ${
               currentView === 'recipes' || currentView === 'create-recipe'
-                ? 'bg-blue-600 text-white'
-                : 'text-zinc-400'
+                ? 'bg-neutral-700 text-neutral-50'
+                : 'text-neutral-400'
             }`}
           >
             <BookOpen className="w-5 h-5" />
@@ -324,8 +324,8 @@ export default function HomePage() {
             }}
             className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition ${
               currentView === 'settings'
-                ? 'bg-blue-600 text-white'
-                : 'text-zinc-400'
+                ? 'bg-neutral-700 text-neutral-50'
+                : 'text-neutral-400'
             }`}
           >
             <Settings className="w-5 h-5" />

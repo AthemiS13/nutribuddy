@@ -85,7 +85,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
   if (loading || !stats) {
     return (
       <div className="flex justify-center py-8">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-neutral-400" />
       </div>
     );
   }
@@ -111,14 +111,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
       {
         label: 'Calories',
         data: weeklyData.map((day) => day.totalCalories),
-        borderColor: '#3b82f6',
-        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        borderColor: '#a3a3a3',
+        backgroundColor: 'rgba(163, 163, 163, 0.1)',
         tension: 0.4,
       },
       {
         label: 'Goal',
         data: weeklyData.map(() => userProfile.dailyCalorieGoal),
-        borderColor: '#6b7280',
+        borderColor: '#737373',
         backgroundColor: 'transparent',
         borderDash: [5, 5],
         tension: 0,
@@ -132,18 +132,18 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
     plugins: {
       legend: {
         labels: {
-          color: '#e5e7eb',
+          color: '#f5f5f5',
         },
       },
     },
     scales: {
       y: {
-        ticks: { color: '#9ca3af' },
-        grid: { color: '#374151' },
+        ticks: { color: '#a3a3a3' },
+        grid: { color: '#262626' },
       },
       x: {
-        ticks: { color: '#9ca3af' },
-        grid: { color: '#374151' },
+        ticks: { color: '#a3a3a3' },
+        grid: { color: '#262626' },
       },
     },
   };
@@ -151,52 +151,52 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
   return (
     <div className="space-y-6">
       {/* Date Navigation */}
-      <div className="bg-gray-800 p-4 rounded-lg flex items-center justify-between">
+      <div className="bg-neutral-900 p-4 rounded-lg flex items-center justify-between">
         <button
           onClick={() => changeDate(-1)}
-          className="p-2 hover:bg-gray-700 rounded-lg transition"
+          className="p-2 hover:bg-neutral-800 rounded-lg transition"
         >
-          <ChevronLeft className="w-5 h-5 text-white" />
+          <ChevronLeft className="w-5 h-5 text-neutral-50" />
         </button>
-        <h2 className="text-xl font-bold text-white">
+        <h2 className="text-xl font-bold text-neutral-50">
           {format(currentDate, 'EEEE, MMMM d, yyyy')}
         </h2>
         <button
           onClick={() => changeDate(1)}
-          className="p-2 hover:bg-gray-700 rounded-lg transition"
+          className="p-2 hover:bg-neutral-800 rounded-lg transition"
           disabled={format(currentDate, 'yyyy-MM-dd') >= format(new Date(), 'yyyy-MM-dd')}
         >
-          <ChevronRight className="w-5 h-5 text-white" />
+          <ChevronRight className="w-5 h-5 text-neutral-50" />
         </button>
       </div>
 
       {/* Calorie Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <p className="text-gray-400 text-sm mb-2">Calories Consumed</p>
-          <p className="text-3xl font-bold text-white">{stats.totalCalories.toFixed(0)}</p>
-          <div className="mt-2 bg-gray-700 rounded-full h-2">
+        <div className="bg-neutral-900 p-6 rounded-lg">
+          <p className="text-neutral-400 text-sm mb-2">Calories Consumed</p>
+          <p className="text-3xl font-bold text-neutral-50">{stats.totalCalories.toFixed(0)}</p>
+          <div className="mt-2 bg-neutral-800 rounded-full h-2">
             <div
               className={`h-2 rounded-full transition-all ${
-                calorieProgress > 100 ? 'bg-red-500' : 'bg-blue-500'
+                calorieProgress > 100 ? 'bg-red-500' : 'bg-neutral-400'
               }`}
               style={{ width: `${Math.min(calorieProgress, 100)}%` }}
             />
           </div>
         </div>
 
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <p className="text-gray-400 text-sm mb-2">Daily Goal</p>
-          <p className="text-3xl font-bold text-white">{userProfile.dailyCalorieGoal}</p>
-          <p className="text-sm text-gray-400 mt-2">kcal target</p>
+        <div className="bg-neutral-900 p-6 rounded-lg">
+          <p className="text-neutral-400 text-sm mb-2">Daily Goal</p>
+          <p className="text-3xl font-bold text-neutral-50">{userProfile.dailyCalorieGoal}</p>
+          <p className="text-sm text-neutral-400 mt-2">kcal target</p>
         </div>
 
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <p className="text-gray-400 text-sm mb-2">Remaining</p>
+        <div className="bg-neutral-900 p-6 rounded-lg">
+          <p className="text-neutral-400 text-sm mb-2">Remaining</p>
           <p className={`text-3xl font-bold ${remainingCalories >= 0 ? 'text-green-500' : 'text-red-500'}`}>
             {Math.abs(remainingCalories).toFixed(0)}
           </p>
-          <p className="text-sm text-gray-400 mt-2">
+          <p className="text-sm text-neutral-400 mt-2">
             {remainingCalories >= 0 ? 'kcal left' : 'kcal over'}
           </p>
         </div>
@@ -204,8 +204,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
 
       {/* Macronutrients */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <h3 className="text-lg font-semibold text-white mb-4">Macronutrient Distribution</h3>
+        <div className="bg-neutral-900 p-6 rounded-lg">
+          <h3 className="text-lg font-semibold text-neutral-50 mb-4">Macronutrient Distribution</h3>
           <div className="h-64">
             <Doughnut
               data={macroData}
@@ -215,7 +215,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
                 plugins: {
                   legend: {
                     position: 'bottom',
-                    labels: { color: '#e5e7eb' },
+                    labels: { color: '#f5f5f5' },
                   },
                 },
               }}
@@ -223,22 +223,22 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
           </div>
           <div className="mt-4 grid grid-cols-3 gap-4">
             <div className="text-center">
-              <p className="text-gray-400 text-xs">Protein</p>
-              <p className="text-white text-lg font-bold">{stats.totalProtein.toFixed(1)}g</p>
+              <p className="text-neutral-400 text-xs">Protein</p>
+              <p className="text-neutral-50 text-lg font-bold">{stats.totalProtein.toFixed(1)}g</p>
             </div>
             <div className="text-center">
-              <p className="text-gray-400 text-xs">Fats</p>
-              <p className="text-white text-lg font-bold">{stats.totalFats.toFixed(1)}g</p>
+              <p className="text-neutral-400 text-xs">Fats</p>
+              <p className="text-neutral-50 text-lg font-bold">{stats.totalFats.toFixed(1)}g</p>
             </div>
             <div className="text-center">
-              <p className="text-gray-400 text-xs">Carbs</p>
-              <p className="text-white text-lg font-bold">{stats.totalCarbohydrates.toFixed(1)}g</p>
+              <p className="text-neutral-400 text-xs">Carbs</p>
+              <p className="text-neutral-50 text-lg font-bold">{stats.totalCarbohydrates.toFixed(1)}g</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-gray-800 p-6 rounded-lg">
-          <h3 className="text-lg font-semibold text-white mb-4">7-Day Calorie Trend</h3>
+        <div className="bg-neutral-900 p-6 rounded-lg">
+          <h3 className="text-lg font-semibold text-neutral-50 mb-4">7-Day Calorie Trend</h3>
           <div className="h-64">
             <Line data={weeklyCaloriesData} options={chartOptions} />
           </div>
@@ -246,22 +246,22 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
       </div>
 
       {/* Meal Log */}
-      <div className="bg-gray-800 p-6 rounded-lg">
-        <h3 className="text-lg font-semibold text-white mb-4">Today's Meals</h3>
+      <div className="bg-neutral-900 p-6 rounded-lg">
+        <h3 className="text-lg font-semibold text-neutral-50 mb-4">Today's Meals</h3>
         {stats.meals.length === 0 ? (
-          <p className="text-gray-400 text-center py-4">No meals logged yet today</p>
+          <p className="text-neutral-400 text-center py-4">No meals logged yet today</p>
         ) : (
           <div className="space-y-3">
             {stats.meals.map((meal) => (
-              <div key={meal.id} className="bg-gray-700 p-4 rounded-lg flex justify-between items-start">
+              <div key={meal.id} className="bg-neutral-800 p-4 rounded-lg flex justify-between items-start">
                 <div className="flex-1">
-                  <h4 className="text-white font-semibold">{meal.recipeName}</h4>
-                  <p className="text-gray-400 text-sm">{meal.mass}g</p>
+                  <h4 className="text-neutral-50 font-semibold">{meal.recipeName}</h4>
+                  <p className="text-neutral-400 text-sm">{meal.mass}g</p>
                   <div className="mt-2 flex gap-4 text-sm">
-                    <span className="text-blue-400">{meal.nutrients.calories.toFixed(0)} kcal</span>
-                    <span className="text-gray-400">P: {meal.nutrients.protein.toFixed(1)}g</span>
-                    <span className="text-gray-400">F: {meal.nutrients.fats.toFixed(1)}g</span>
-                    <span className="text-gray-400">C: {meal.nutrients.carbohydrates.toFixed(1)}g</span>
+                    <span className="text-neutral-400">{meal.nutrients.calories.toFixed(0)} kcal</span>
+                    <span className="text-neutral-400">P: {meal.nutrients.protein.toFixed(1)}g</span>
+                    <span className="text-neutral-400">F: {meal.nutrients.fats.toFixed(1)}g</span>
+                    <span className="text-neutral-400">C: {meal.nutrients.carbohydrates.toFixed(1)}g</span>
                   </div>
                 </div>
                 <button

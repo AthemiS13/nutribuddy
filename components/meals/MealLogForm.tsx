@@ -122,22 +122,22 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
   if (loading) {
     return (
       <div className="flex justify-center py-8">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+        <Loader2 className="w-8 h-8 animate-spin text-neutral-400" />
       </div>
     );
   }
 
   if (recipes.length === 0) {
     return (
-      <div className="bg-gray-800 p-6 rounded-lg text-center">
-        <p className="text-gray-400">No recipes found. Create a recipe first to log meals.</p>
+      <div className="bg-neutral-900 p-6 rounded-lg text-center">
+        <p className="text-neutral-400">No recipes found. Create a recipe first to log meals.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg">
-      <h2 className="text-2xl font-bold mb-6 text-white">Log a Meal</h2>
+    <div className="bg-neutral-900 p-6 rounded-lg">
+      <h2 className="text-2xl font-bold mb-6 text-neutral-50">Log a Meal</h2>
       
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
@@ -147,10 +147,10 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
         )}
         
         <div className="recipe-search-container">
-          <label className="block text-sm font-medium text-gray-300 mb-2">Select Recipe</label>
+          <label className="block text-sm font-medium text-neutral-400 mb-2">Select Recipe</label>
           <div className="relative">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-400" />
               <input
                 type="text"
                 value={selectedRecipe ? selectedRecipe.name : searchQuery}
@@ -163,7 +163,7 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
                 }}
                 onFocus={() => setShowDropdown(true)}
                 placeholder="Search recipes..."
-                className="w-full pl-10 pr-10 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-10 py-2 bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-50 focus:ring-2 focus:ring-neutral-600 focus:border-transparent"
               />
               {(searchQuery || selectedRecipe) && (
                 <button
@@ -173,7 +173,7 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
                     setSelectedRecipe(null);
                     setShowDropdown(false);
                   }}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-neutral-50"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -181,7 +181,7 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
             </div>
             
             {showDropdown && !selectedRecipe && (
-              <div className="absolute z-10 w-full mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+              <div className="absolute z-10 w-full mt-1 bg-neutral-800 border border-neutral-800 rounded-lg shadow-lg max-h-60 overflow-y-auto">
                 {filteredRecipes.length > 0 ? (
                   filteredRecipes.map((recipe) => (
                     <button
@@ -194,16 +194,16 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
                         setUseFullRecipe(true);
                         setMass('');
                       }}
-                      className="w-full px-4 py-3 text-left hover:bg-gray-600 transition border-b border-gray-600 last:border-b-0"
+                      className="w-full px-4 py-3 text-left hover:bg-neutral-600 transition border-b border-neutral-800 last:border-b-0"
                     >
-                      <div className="font-medium text-white">{recipe.name}</div>
-                      <div className="text-sm text-gray-400">
+                      <div className="font-medium text-neutral-50">{recipe.name}</div>
+                      <div className="text-sm text-neutral-400">
                         {recipe.totalNutrients.calories.toFixed(0)} kcal • {recipe.totalMass}g
                       </div>
                     </button>
                   ))
                 ) : (
-                  <div className="px-4 py-3 text-gray-400 text-center">
+                  <div className="px-4 py-3 text-neutral-400 text-center">
                     No recipes found
                   </div>
                 )}
@@ -221,15 +221,15 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
                 onClick={() => setUseFullRecipe(true)}
                 className={`w-full p-4 rounded-lg border-2 transition text-left ${
                   useFullRecipe
-                    ? 'border-blue-600 bg-blue-600/10'
-                    : 'border-zinc-700 bg-zinc-800'
+                    ? 'border-neutral-600 bg-neutral-800/10'
+                    : 'border-neutral-800 bg-neutral-800'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
-                  <span className="font-semibold text-white">Full Recipe</span>
-                  <span className="text-sm text-zinc-400">{selectedRecipe.totalMass}g</span>
+                  <span className="font-semibold text-neutral-50">Full Recipe</span>
+                  <span className="text-sm text-neutral-400">{selectedRecipe.totalMass}g</span>
                 </div>
-                <div className="text-sm text-zinc-400">
+                <div className="text-sm text-neutral-400">
                   {selectedRecipe.totalNutrients.calories.toFixed(0)} kcal • {selectedRecipe.totalNutrients.protein.toFixed(0)}g protein
                 </div>
               </button>
@@ -240,24 +240,24 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
                 onClick={() => setUseFullRecipe(false)}
                 className={`w-full p-4 rounded-lg border-2 transition text-left ${
                   !useFullRecipe
-                    ? 'border-blue-600 bg-blue-600/10'
-                    : 'border-zinc-700 bg-zinc-800'
+                    ? 'border-neutral-600 bg-neutral-800/10'
+                    : 'border-neutral-800 bg-neutral-800'
                 }`}
               >
-                <span className="font-semibold text-white">Custom Amount</span>
+                <span className="font-semibold text-neutral-50">Custom Amount</span>
               </button>
             </div>
 
             {!useFullRecipe && (
               <div>
-                <label className="block text-sm font-medium text-zinc-300 mb-2">
+                <label className="block text-sm font-medium text-neutral-400 mb-2">
                   Amount (grams)
                 </label>
                 <input
                   type="number"
                   value={mass}
                   onChange={(e) => setMass(e.target.value)}
-                  className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-50 focus:ring-2 focus:ring-neutral-600 focus:border-transparent"
                   placeholder="Enter grams"
                   min="0"
                   step="1"
@@ -266,28 +266,28 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
             )}
 
             {nutrients && (
-              <div className="bg-zinc-800 p-4 rounded-lg border border-zinc-700">
-                <h3 className="text-sm font-semibold text-zinc-300 mb-3">
+              <div className="bg-neutral-800 p-4 rounded-lg border border-neutral-800">
+                <h3 className="text-sm font-semibold text-neutral-50 mb-3">
                   {useFullRecipe ? 'Full Recipe' : `${nutrients.mass}g`} Nutrition
                 </h3>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <p className="text-zinc-400 text-xs">Calories</p>
-                    <p className="text-white text-lg font-bold">
+                    <p className="text-neutral-400 text-xs">Calories</p>
+                    <p className="text-neutral-50 text-lg font-bold">
                       {nutrients.calories.toFixed(0)} kcal
                     </p>
                   </div>
                   <div>
-                    <p className="text-zinc-400 text-xs">Protein</p>
-                    <p className="text-white text-lg">{nutrients.protein.toFixed(1)}g</p>
+                    <p className="text-neutral-400 text-xs">Protein</p>
+                    <p className="text-neutral-50 text-lg">{nutrients.protein.toFixed(1)}g</p>
                   </div>
                   <div>
-                    <p className="text-zinc-400 text-xs">Fats</p>
-                    <p className="text-white text-lg">{nutrients.fats.toFixed(1)}g</p>
+                    <p className="text-neutral-400 text-xs">Fats</p>
+                    <p className="text-neutral-50 text-lg">{nutrients.fats.toFixed(1)}g</p>
                   </div>
                   <div>
-                    <p className="text-zinc-400 text-xs">Carbs</p>
-                    <p className="text-white text-lg">{nutrients.carbohydrates.toFixed(1)}g</p>
+                    <p className="text-neutral-400 text-xs">Carbs</p>
+                    <p className="text-neutral-50 text-lg">{nutrients.carbohydrates.toFixed(1)}g</p>
                   </div>
                 </div>
               </div>
@@ -296,7 +296,7 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
             <button
               type="submit"
               disabled={saving}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full bg-neutral-700 hover:bg-neutral-600 text-neutral-950 font-semibold py-2 px-4 rounded-lg transition disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {saving ? (
                 <Loader2 className="w-5 h-5 animate-spin" />

@@ -45,8 +45,8 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ onAuthSuccess }) => {
 
   if (isResetPassword) {
     return (
-      <div className="w-full max-w-md mx-auto bg-gray-800 p-8 rounded-lg shadow-xl">
-        <h2 className="text-2xl font-bold mb-6 text-white">Reset Password</h2>
+      <div className="w-full max-w-md mx-auto bg-neutral-900 p-8 rounded-lg shadow-xl">
+        <h2 className="text-2xl font-bold mb-6 text-neutral-50">Reset Password</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
             <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded">
@@ -59,20 +59,20 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ onAuthSuccess }) => {
             </div>
           )}
           <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-neutral-50 focus:ring-2 focus:ring-neutral-600 focus:border-transparent"
               placeholder="you@example.com"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition disabled:opacity-50"
+            className="w-full bg-neutral-700 hover:bg-neutral-600 text-neutral-50 font-semibold py-2 px-4 rounded-lg transition disabled:opacity-50"
           >
             {loading ? 'Sending...' : 'Send Reset Email'}
           </button>
@@ -83,7 +83,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ onAuthSuccess }) => {
               setError('');
               setMessage('');
             }}
-            className="w-full text-gray-400 hover:text-white text-sm"
+            className="w-full text-neutral-400 hover:text-neutral-50 text-sm"
           >
             Back to login
           </button>
@@ -93,8 +93,8 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ onAuthSuccess }) => {
   }
 
   return (
-    <div className="w-full max-w-md mx-auto bg-gray-800 p-8 rounded-lg shadow-xl">
-      <h2 className="text-2xl font-bold mb-6 text-white">
+    <div className="w-full max-w-md mx-auto bg-neutral-900 p-8 rounded-lg shadow-xl">
+      <h2 className="text-2xl font-bold mb-6 text-neutral-50">
         {isLogin ? 'Login' : 'Sign Up'}
       </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -104,32 +104,32 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ onAuthSuccess }) => {
           </div>
         )}
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
+          <label className="block text-sm font-medium text-neutral-400 mb-2">Email</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-neutral-50 focus:ring-2 focus:ring-neutral-600 focus:border-transparent"
             placeholder="you@example.com"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
+          <label className="block text-sm font-medium text-neutral-400 mb-2">Password</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             minLength={6}
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-neutral-50 focus:ring-2 focus:ring-neutral-600 focus:border-transparent"
             placeholder="••••••••"
           />
         </div>
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition disabled:opacity-50"
+          className="w-full bg-neutral-700 hover:bg-neutral-600 text-neutral-50 font-semibold py-2 px-4 rounded-lg transition disabled:opacity-50"
         >
           {loading ? 'Loading...' : isLogin ? 'Login' : 'Sign Up'}
         </button>
@@ -140,7 +140,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ onAuthSuccess }) => {
               setIsLogin(!isLogin);
               setError('');
             }}
-            className="text-blue-400 hover:text-blue-300"
+            className="text-neutral-400 hover:text-neutral-50"
           >
             {isLogin ? 'Need an account? Sign up' : 'Already have an account? Login'}
           </button>
@@ -151,7 +151,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ onAuthSuccess }) => {
                 setIsResetPassword(true);
                 setError('');
               }}
-              className="text-gray-400 hover:text-white"
+              className="text-neutral-400 hover:text-neutral-50"
             >
               Forgot password?
             </button>
