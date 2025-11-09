@@ -53,8 +53,9 @@ export const createRecipe = async (
   try {
     const { totalNutrients, totalMass, nutrientsPer100g } = calculateNutrients(ingredients);
     
-    const now = new Date().toISOString();
-    const recipesRef = collection(db, 'users', userId, 'recipes');
+  const now = new Date().toISOString();
+  if (!db) throw new Error('Firestore not initialized. Ensure NEXT_PUBLIC_FIREBASE_* env vars are set and Firebase initializes on the client.');
+  const recipesRef = collection(db as any, 'users', userId, 'recipes');
     
     // Clean ingredients to remove undefined fields
     const cleanedIngredients = ingredients.map(item => {
@@ -89,7 +90,8 @@ export const createRecipe = async (
 
 export const getRecipe = async (userId: string, recipeId: string): Promise<Recipe | null> => {
   try {
-    const docRef = doc(db, 'users', userId, 'recipes', recipeId);
+  if (!db) throw new Error('Firestore not initialized. Ensure NEXT_PUBLIC_FIREBASE_* env vars are set and Firebase initializes on the client.');
+  const docRef = doc(db as any, 'users', userId, 'recipes', recipeId);
     const docSnap = await getDoc(docRef);
     
     if (docSnap.exists()) {
@@ -104,8 +106,9 @@ export const getRecipe = async (userId: string, recipeId: string): Promise<Recip
 
 export const getUserRecipes = async (userId: string): Promise<Recipe[]> => {
   try {
-    const recipesRef = collection(db, 'users', userId, 'recipes');
-    const q = query(recipesRef, orderBy('createdAt', 'desc'));
+  if (!db) throw new Error('Firestore not initialized. Ensure NEXT_PUBLIC_FIREBASE_* env vars are set and Firebase initializes on the client.');
+  const recipesRef = collection(db as any, 'users', userId, 'recipes');
+  const q = query(recipesRef, orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
     
     return querySnapshot.docs.map((doc) => ({
@@ -139,7 +142,8 @@ export const updateRecipe = async (
       return cleanItem;
     });
     
-    const docRef = doc(db, 'users', userId, 'recipes', recipeId);
+    if (!db) throw new Error('Firestore not initialized. Ensure NEXT_PUBLIC_FIREBASE_* env vars are set and Firebase initializes on the client.');
+    const docRef = doc(db as any, 'users', userId, 'recipes', recipeId);
     await updateDoc(docRef, {
       name,
       ingredients: cleanedIngredients,
@@ -156,7 +160,8 @@ export const updateRecipe = async (
 
 export const deleteRecipe = async (userId: string, recipeId: string): Promise<void> => {
   try {
-    const docRef = doc(db, 'users', userId, 'recipes', recipeId);
+    if (!db) throw new Error('Firestore not initialized. Ensure NEXT_PUBLIC_FIREBASE_* env vars are set and Firebase initializes on the client.');
+    const docRef = doc(db as any, 'users', userId, 'recipes', recipeId);
     await deleteDoc(docRef);
   } catch (error) {
     console.error('Error deleting recipe:', error);
