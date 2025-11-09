@@ -3,6 +3,7 @@ export interface UserProfile {
   email: string;
   bodyWeight: number; // in kg
   dailyCalorieGoal: number;
+  dailyProteinGoal?: number; // in grams
   targetMonthlyWeightChange?: number; // in kg, positive for gain, negative for loss
   preferredUnit?: 'grams' | 'tablespoons'; // user's preferred measurement unit
   createdAt: string;

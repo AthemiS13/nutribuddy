@@ -21,6 +21,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
   const [formData, setFormData] = useState({
     bodyWeight: userProfile.bodyWeight.toString(),
     dailyCalorieGoal: userProfile.dailyCalorieGoal.toString(),
+    dailyProteinGoal: userProfile.dailyProteinGoal?.toString() || '',
     targetMonthlyWeightChange: userProfile.targetMonthlyWeightChange?.toString() || '0',
     preferredUnit: userProfile.preferredUnit || 'grams',
   });
@@ -47,6 +48,9 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
       const updatedProfile: Partial<UserProfile> = {
         bodyWeight: parseFloat(formData.bodyWeight),
         dailyCalorieGoal: parseInt(formData.dailyCalorieGoal),
+        ...(formData.dailyProteinGoal && {
+          dailyProteinGoal: parseInt(formData.dailyProteinGoal),
+        }),
         targetMonthlyWeightChange: parseFloat(formData.targetMonthlyWeightChange) || undefined,
         preferredUnit: formData.preferredUnit as 'grams' | 'tablespoons',
       };
@@ -128,6 +132,25 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                 step="1"
                 className="w-full px-4 py-2 bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-50 focus:ring-2 focus:ring-neutral-600 focus:border-transparent"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-neutral-400 mb-2">
+                Daily Protein Goal (grams) - Optional
+              </label>
+              <input
+                type="number"
+                name="dailyProteinGoal"
+                value={formData.dailyProteinGoal}
+                onChange={handleChange}
+                min="0"
+                step="1"
+                className="w-full px-4 py-2 bg-neutral-800 border border-neutral-800 rounded-lg text-neutral-50 focus:ring-2 focus:ring-neutral-600 focus:border-transparent"
+                placeholder="150"
+              />
+              <p className="text-xs text-neutral-400 mt-1">
+                A common recommendation is 0.8-1.0g per lb of body weight. Leave empty to disable protein tracking.
+              </p>
             </div>
 
             <div>

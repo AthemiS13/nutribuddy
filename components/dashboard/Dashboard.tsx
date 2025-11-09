@@ -3,31 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { getDailyStats, deleteMeal } from '@/lib/meal-service';
 import { DailyStats, MealLog, UserProfile } from '@/lib/types';
-import { Doughnut, Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  ArcElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import { MacroChart } from '@/components/charts/MacroChart';
+import { CalorieChart } from '@/components/charts/CalorieChart';
+import { ProteinProgress } from '@/components/charts/ProteinProgress';
 import { format, subDays } from 'date-fns';
 import { Trash2, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
-
-ChartJS.register(
-  ArcElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
 
 interface DashboardProps {
   userId: string;
@@ -93,60 +73,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
   const calorieProgress = (stats.totalCalories / userProfile.dailyCalorieGoal) * 100;
   const remainingCalories = userProfile.dailyCalorieGoal - stats.totalCalories;
 
-  const macroData = {
-    labels: ['Protein', 'Fats', 'Carbs'],
-    datasets: [
-      {
-        data: [stats.totalProtein * 4, stats.totalFats * 9, stats.totalCarbohydrates * 4],
-        backgroundColor: ['#737373', '#525252', '#404040'],
-        borderColor: ['#a3a3a3', '#737373', '#525252'],
-        borderWidth: 2,
-      },
-    ],
-  };
-
-  const weeklyCaloriesData = {
-    labels: weeklyData.map((day) => format(new Date(day.date), 'EEE')),
-    datasets: [
-      {
-        label: 'Calories',
-        data: weeklyData.map((day) => day.totalCalories),
-        borderColor: '#a3a3a3',
-        backgroundColor: 'rgba(163, 163, 163, 0.1)',
-        tension: 0.4,
-      },
-      {
-        label: 'Goal',
-        data: weeklyData.map(() => userProfile.dailyCalorieGoal),
-        borderColor: '#737373',
-        backgroundColor: 'transparent',
-        borderDash: [5, 5],
-        tension: 0,
-      },
-    ],
-  };
-
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        labels: {
-          color: '#f5f5f5',
-        },
-      },
-    },
-    scales: {
-      y: {
-        ticks: { color: '#a3a3a3' },
-        grid: { color: '#262626' },
-      },
-      x: {
-        ticks: { color: '#a3a3a3' },
-        grid: { color: '#262626' },
-      },
-    },
-  };
+  // Prepare data for recharts
+  const chartCalorieData = weeklyData.map((day) => ({
+    date: format(new Date(day.date), 'EEE'),
+    calories: day.totalCalories,
+    goal: userProfile.dailyCalorieGoal,
+  }));
 
   return (
     <div className="space-y-6">
@@ -202,23 +134,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
         </div>
       </div>
 
-      {/* Macronutrients */}
+      {/* Macronutrients & Protein */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-neutral-900 p-6 rounded-lg">
           <h3 className="text-lg font-semibold text-neutral-50 mb-4">Macronutrient Distribution</h3>
           <div className="h-64">
-            <Doughnut
-              data={macroData}
-              options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    position: 'bottom',
-                    labels: { color: '#f5f5f5' },
-                  },
-                },
-              }}
+            <MacroChart
+              protein={stats.totalProtein}
+              fats={stats.totalFats}
+              carbs={stats.totalCarbohydrates}
             />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-4">
@@ -237,11 +161,19 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
           </div>
         </div>
 
-        <div className="bg-neutral-900 p-6 rounded-lg">
-          <h3 className="text-lg font-semibold text-neutral-50 mb-4">7-Day Calorie Trend</h3>
-          <div className="h-64">
-            <Line data={weeklyCaloriesData} options={chartOptions} />
-          </div>
+        {userProfile.dailyProteinGoal && (
+          <ProteinProgress
+            current={stats.totalProtein}
+            goal={userProfile.dailyProteinGoal}
+          />
+        )}
+      </div>
+
+      {/* 7-Day Calorie Trend */}
+      <div className="bg-neutral-900 p-6 rounded-lg">
+        <h3 className="text-lg font-semibold text-neutral-50 mb-4">7-Day Calorie Trend</h3>
+        <div className="h-64">
+          <CalorieChart data={chartCalorieData} />
         </div>
       </div>
 

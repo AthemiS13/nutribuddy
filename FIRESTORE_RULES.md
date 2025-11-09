@@ -21,24 +21,22 @@ service cloud.firestore {
     // Allow authenticated users to read/write their own user profile
     match /users/{uid} {
       allow read, write: if request.auth.uid == uid;
+      
+      // Allow users to read/write their own meals (subcollection)
+      match /meals/{mealId} {
+        allow read, write: if request.auth.uid == uid;
+      }
+      
+      // Allow users to read/write their own recipes (subcollection)
+      match /recipes/{recipeId} {
+        allow read, write: if request.auth.uid == uid;
+      }
     }
     
     // Allow authenticated users to query the users collection by email
     // This is needed for duplicate email checking during signup
     match /users/{document=**} {
       allow list: if request.auth != null;
-    }
-    
-    // Allow users to read/write their own recipes
-    match /recipes/{recipeId} {
-      allow read, write: if request.auth.uid == resource.data.uid;
-      allow create: if request.auth.uid == request.resource.data.uid;
-    }
-    
-    // Allow users to read/write their own meals
-    match /meals/{mealId} {
-      allow read, write: if request.auth.uid == resource.data.uid;
-      allow create: if request.auth.uid == request.resource.data.uid;
     }
   }
 }

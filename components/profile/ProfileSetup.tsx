@@ -13,6 +13,7 @@ interface ProfileSetupProps {
 export const ProfileSetup: React.FC<ProfileSetupProps> = ({ uid, email, onComplete, onLogout }) => {
   const [bodyWeight, setBodyWeight] = useState('');
   const [dailyCalorieGoal, setDailyCalorieGoal] = useState('');
+  const [dailyProteinGoal, setDailyProteinGoal] = useState('');
   const [targetMonthlyWeightChange, setTargetMonthlyWeightChange] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,6 +29,9 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ uid, email, onComple
         email,
         bodyWeight: parseFloat(bodyWeight),
         dailyCalorieGoal: parseInt(dailyCalorieGoal),
+        ...(dailyProteinGoal && {
+          dailyProteinGoal: parseInt(dailyProteinGoal),
+        }),
         ...(targetMonthlyWeightChange && {
           targetMonthlyWeightChange: parseFloat(targetMonthlyWeightChange),
         }),
@@ -81,6 +85,22 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ uid, email, onComple
             className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-neutral-50 focus:ring-2 focus:ring-neutral-600 focus:border-transparent"
             placeholder="2000"
           />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-neutral-400 mb-2">
+            Daily Protein Goal (grams) - Optional
+          </label>
+          <input
+            type="number"
+            value={dailyProteinGoal}
+            onChange={(e) => setDailyProteinGoal(e.target.value)}
+            className="w-full px-4 py-2 bg-neutral-800 border border-neutral-700 rounded-lg text-neutral-50 focus:ring-2 focus:ring-neutral-600 focus:border-transparent"
+            placeholder="150"
+          />
+          <p className="text-xs text-neutral-400 mt-1">
+            A common recommendation is 0.8-1.0g per lb of body weight
+          </p>
         </div>
 
         <div>
