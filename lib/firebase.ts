@@ -12,15 +12,35 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase only on client side
-let app: FirebaseApp;
-let auth: Auth;
-let db: Firestore;
+let app: FirebaseApp | undefined;
+let auth: Auth | undefined;
+let db: Firestore | undefined;
 
 if (typeof window !== 'undefined') {
-  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-  auth = getAuth(app);
-  db = getFirestore(app);
-  console.log('Firebase initialized with project:', firebaseConfig.projectId);
+  // Quick sanity checks to help debugging invalid-api-key during deploys
+  if (!firebaseConfig.apiKey) {
+    // Missing API key is the most common cause for auth/invalid-api-key in deployed builds
+    // Log a clear message so you can see it in the browser console when the site loads.
+    // Do NOT expose full keys in logs in production; this is intended as a short-term debug aid.
+    // If you prefer, remove this log after verifying your Pages environment variables.
+    console.error(
+      'Firebase API key is missing. Ensure NEXT_PUBLIC_FIREBASE_API_KEY is set in your deployment environment (Cloudflare Pages environment variables).'
+    );
+  } else {
+    try {
+      app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+      auth = getAuth(app);
+      db = getFirestore(app);
+      console.log('Firebase initialized with project:', firebaseConfig.projectId);
+    } catch (err) {
+      // Re-throw after logging useful debug info
+      console.error('Failed to initialize Firebase. Check your config and API key:', {
+        projectId: firebaseConfig.projectId,
+        authDomain: firebaseConfig.authDomain,
+      });
+      throw err;
+    }
+  }
 }
 
 export { app, auth, db };
