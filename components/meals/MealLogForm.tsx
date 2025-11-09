@@ -280,43 +280,27 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
                   <label className="block text-sm font-medium text-neutral-400 mb-2">
                     Amount & Unit
                   </label>
-                  <div className="inline-flex items-center border border-neutral-800 rounded-lg bg-neutral-950 px-2 py-1.5 gap-1">
-                    {/* Up/Down spinner buttons */}
-                    <div className="flex flex-col gap-0.5">
-                      <button
-                        type="button"
-                        onClick={() => setMass(String((parseFloat(mass) || 0) + 1))}
-                        className="h-4 w-5 text-neutral-400 hover:text-neutral-200 text-xs flex items-center justify-center font-bold"
-                      >
-                        ▲
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setMass(String(Math.max(0, (parseFloat(mass) || 0) - 1)))}
-                        className="h-4 w-5 text-neutral-400 hover:text-neutral-200 text-xs flex items-center justify-center font-bold"
-                      >
-                        ▼
-                      </button>
+                  <div className="flex items-center gap-2">
+                    {/* Number input box - bordered */}
+                    <div className="inline-flex items-center border border-neutral-700 rounded-lg bg-neutral-950 px-3 py-1.5">
+                      <input
+                        type="number"
+                        value={mass}
+                        onChange={(e) => setMass(e.target.value)}
+                        className="w-16 px-0 py-0 bg-transparent text-neutral-50 font-medium focus:outline-none text-sm text-center [&::-webkit-outer-spin-button]:[appearance:none] [&::-webkit-inner-spin-button]:[appearance:none] [-moz-appearance:textfield]"
+                        placeholder="0"
+                        min="0"
+                        step="1"
+                      />
                     </div>
 
-                    {/* Number input */}
-                    <input
-                      type="number"
-                      value={mass}
-                      onChange={(e) => setMass(e.target.value)}
-                      className="w-12 px-2 py-1 bg-transparent text-neutral-50 font-medium focus:outline-none text-sm text-center [&::-webkit-outer-spin-button]:[appearance:none] [&::-webkit-inner-spin-button]:[appearance:none] [-moz-appearance:textfield]"
-                      placeholder="0"
-                      min="0"
-                      step="1"
-                    />
-
-                    {/* Unit picker dropdown - inline */}
+                    {/* Unit selector - clickable text */}
                     <select
                       value={selectedUnit}
                       onChange={(e) => setSelectedUnit(e.target.value as 'g' | 'tbsp' | 'special')}
-                      className="px-1.5 py-1 bg-transparent text-neutral-50 font-medium focus:outline-none text-xs appearance-none cursor-pointer"
+                      className="px-2 py-1 bg-transparent text-neutral-300 hover:text-neutral-50 font-medium focus:outline-none text-xs appearance-none cursor-pointer transition"
                     >
-                      <option value="g">g</option>
+                      <option value="g">grams</option>
                       <option value="tbsp">tbsp</option>
                       {selectedRecipe?.ingredients?.[0]?.ingredient.servingSize && 
                        sanitizeServingUnit(selectedRecipe.ingredients[0].ingredient.servingUnit) && (
@@ -326,8 +310,8 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
 
                     {/* Grams display - only for special units */}
                     {selectedUnit === 'special' && (
-                      <span className="text-neutral-400 text-xs whitespace-nowrap flex-shrink-0">
-                        {((parseFloat(mass) || 0) * (selectedRecipe?.ingredients?.[0]?.ingredient.servingSize || 1)).toFixed(0)}g
+                      <span className="text-neutral-500 text-xs whitespace-nowrap flex-shrink-0 -ml-1">
+                        ({((parseFloat(mass) || 0) * (selectedRecipe?.ingredients?.[0]?.ingredient.servingSize || 1)).toFixed(0)}g)
                       </span>
                     )}
                   </div>

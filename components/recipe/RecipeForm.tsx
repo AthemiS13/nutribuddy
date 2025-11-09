@@ -277,75 +277,53 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
                   </div>
                   
                   {/* Quantity input - compact layout */}
-                  {/* Combined quantity, unit selector, and grams */}
-                  <div className="inline-flex items-center border border-neutral-800 rounded-lg bg-neutral-950 px-2 py-1.5 gap-1">
-                    {/* Up/Down spinner buttons */}
-                    <div className="flex flex-col gap-0.5">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const multiplier = ingredientUnits[index] === 'special' && item.ingredient.servingSize ? item.ingredient.servingSize : ingredientUnits[index] === 'tbsp' ? 15 : 1;
-                          updateIngredientMass(index, item.mass + multiplier);
+                  {/* Combined quantity and unit selector */}
+                  <div className="flex items-center gap-2">
+                    {/* Number input box - bordered */}
+                    <div className="inline-flex items-center border border-neutral-700 rounded-lg bg-neutral-950 px-3 py-1.5">
+                      <input
+                        type="number"
+                        value={
+                          ingredientUnits[index] === 'special' && item.ingredient.servingSize
+                            ? Math.round(item.mass / item.ingredient.servingSize * 10) / 10
+                            : ingredientUnits[index] === 'tbsp'
+                            ? Math.round(item.mass / 15 * 10) / 10
+                            : item.mass
+                        }
+                        onChange={(e) => {
+                          const inputValue = parseFloat(e.target.value) || 0;
+                          let grams = inputValue;
+                          
+                          if (ingredientUnits[index] === 'special' && item.ingredient.servingSize) {
+                            grams = inputValue * item.ingredient.servingSize;
+                          } else if (ingredientUnits[index] === 'tbsp') {
+                            grams = inputValue * 15;
+                          }
+                          
+                          updateIngredientMass(index, grams);
                         }}
-                        className="h-4 w-5 text-neutral-400 hover:text-neutral-200 text-xs flex items-center justify-center font-bold"
-                      >
-                        ▲
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const multiplier = ingredientUnits[index] === 'special' && item.ingredient.servingSize ? item.ingredient.servingSize : ingredientUnits[index] === 'tbsp' ? 15 : 1;
-                          updateIngredientMass(index, Math.max(0, item.mass - multiplier));
-                        }}
-                        className="h-4 w-5 text-neutral-400 hover:text-neutral-200 text-xs flex items-center justify-center font-bold"
-                      >
-                        ▼
-                      </button>
+                        className="w-16 px-0 py-0 bg-transparent text-neutral-50 font-medium focus:outline-none text-sm text-center [&::-webkit-outer-spin-button]:[appearance:none] [&::-webkit-inner-spin-button]:[appearance:none] [-moz-appearance:textfield]"
+                        placeholder="0"
+                        min="0"
+                        step="1"
+                      />
                     </div>
 
-                    {/* Number input */}
-                    <input
-                      type="number"
-                      value={
-                        ingredientUnits[index] === 'special' && item.ingredient.servingSize
-                          ? Math.round(item.mass / item.ingredient.servingSize * 10) / 10
-                          : ingredientUnits[index] === 'tbsp'
-                          ? Math.round(item.mass / 15 * 10) / 10
-                          : item.mass
-                      }
-                      onChange={(e) => {
-                        const inputValue = parseFloat(e.target.value) || 0;
-                        let grams = inputValue;
-                        
-                        if (ingredientUnits[index] === 'special' && item.ingredient.servingSize) {
-                          grams = inputValue * item.ingredient.servingSize;
-                        } else if (ingredientUnits[index] === 'tbsp') {
-                          grams = inputValue * 15;
-                        }
-                        
-                        updateIngredientMass(index, grams);
-                      }}
-                      className="w-12 px-2 py-1 bg-transparent text-neutral-50 font-medium focus:outline-none text-sm text-center [&::-webkit-outer-spin-button]:[appearance:none] [&::-webkit-inner-spin-button]:[appearance:none] [-moz-appearance:textfield]"
-                      placeholder="0"
-                      min="0"
-                      step="1"
-                    />
-
-                    {/* Unit picker dropdown - inline */}
+                    {/* Unit selector - clickable text */}
                     <select
                       value={ingredientUnits[index]}
                       onChange={(e) => setIngredientUnits({ ...ingredientUnits, [index]: e.target.value as 'g' | 'tbsp' | 'special' })}
-                      className="px-1.5 py-1 bg-transparent text-neutral-50 font-medium focus:outline-none text-xs appearance-none cursor-pointer"
+                      className="px-2 py-1 bg-transparent text-neutral-300 hover:text-neutral-50 font-medium focus:outline-none text-xs appearance-none cursor-pointer transition"
                     >
-                      <option value="g">g</option>
+                      <option value="g">grams</option>
                       <option value="tbsp">tbsp</option>
                       {hasSpecialUnit && <option value="special">{abbreviateUnit(cleanUnit)}</option>}
                     </select>
 
                     {/* Grams display - only for special units */}
                     {ingredientUnits[index] === 'special' && (
-                      <span className="text-neutral-400 text-xs whitespace-nowrap flex-shrink-0">
-                        {item.mass.toFixed(0)}g
+                      <span className="text-neutral-500 text-xs whitespace-nowrap flex-shrink-0 -ml-1">
+                        ({item.mass.toFixed(0)}g)
                       </span>
                     )}
                   </div>
@@ -360,27 +338,27 @@ export const RecipeForm: React.FC<RecipeFormProps> = ({
           <div className="bg-neutral-800 border border-neutral-800 p-4 rounded-lg">
             <h3 className="text-base font-bold text-neutral-50 mb-3">Nutrition Summary</h3>
             <div className="grid grid-cols-3 gap-2">
-              <div className="bg-neutral-950 p-3 rounded-lg">
+              <div className="bg-neutral-950 border border-neutral-700 p-3 rounded-lg">
                 <p className="text-neutral-400 text-xs font-medium mb-0.5">Total</p>
                 <p className="text-neutral-50 text-lg font-bold">{totalMass.toFixed(0)}<span className="text-sm text-neutral-400">g</span></p>
               </div>
-              <div className="bg-neutral-950 p-3 rounded-lg">
+              <div className="bg-neutral-950 border border-neutral-700 p-3 rounded-lg">
                 <p className="text-neutral-400 text-xs font-medium mb-0.5">Calories</p>
                 <p className="text-neutral-50 text-lg font-bold">{totalNutrients.calories.toFixed(0)}</p>
               </div>
-              <div className="bg-neutral-950 p-3 rounded-lg">
+              <div className="bg-neutral-950 border border-neutral-700 p-3 rounded-lg">
                 <p className="text-neutral-400 text-xs font-medium mb-0.5">Per 100g</p>
                 <p className="text-neutral-50 text-lg font-bold">{nutrientsPer100g.calories.toFixed(0)}</p>
               </div>
-              <div className="bg-neutral-950 p-3 rounded-lg">
+              <div className="bg-neutral-950 border border-neutral-700 p-3 rounded-lg">
                 <p className="text-neutral-400 text-xs font-medium mb-0.5">Protein</p>
                 <p className="text-neutral-50 text-base font-bold">{totalNutrients.protein.toFixed(1)}g</p>
               </div>
-              <div className="bg-neutral-950 p-3 rounded-lg">
+              <div className="bg-neutral-950 border border-neutral-700 p-3 rounded-lg">
                 <p className="text-neutral-400 text-xs font-medium mb-0.5">Fats</p>
                 <p className="text-neutral-50 text-base font-bold">{totalNutrients.fats.toFixed(1)}g</p>
               </div>
-              <div className="bg-neutral-950 p-3 rounded-lg">
+              <div className="bg-neutral-950 border border-neutral-700 p-3 rounded-lg">
                 <p className="text-neutral-400 text-xs font-medium mb-0.5">Carbs</p>
                 <p className="text-neutral-50 text-base font-bold">{totalNutrients.carbohydrates.toFixed(1)}g</p>
               </div>
