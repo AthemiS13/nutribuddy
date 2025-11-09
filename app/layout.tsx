@@ -3,8 +3,13 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 
 export const metadata: Metadata = {
-  title: "NutriBuddy - Calorie & Macro Tracker",
-  description: "Track your calories, macros, and meals with ease",
+  title: "Nutrix - Calorie & Macro Tracker",
+  description: "Track your calories and macros with ease",
+  icons: {
+    icon: '/nutrix.svg',
+    shortcut: '/nutrix.svg',
+    apple: '/nutrix.svg',
+  },
 };
 
 export default function RootLayout({

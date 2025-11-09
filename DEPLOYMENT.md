@@ -1,6 +1,6 @@
-# Deployment Guide for NutriBuddy
+# Deployment Guide for Nutrix
 
-This guide will help you deploy NutriBuddy to Cloudflare Pages.
+This guide will help you deploy Nutrix to Cloudflare Pages.
 
 ## Prerequisites Checklist
 
@@ -95,10 +95,10 @@ Before deploying, ensure you have:
 
 1. **Initialize Git (if not already done)**:
    ```bash
-   cd nutribuddy
+   cd nutrix
    git init
    git add .
-   git commit -m "Initial commit: NutriBuddy calorie tracker"
+   git commit -m "Initial commit: Nutrix calorie tracker"
    ```
 
 2. **Create GitHub Repository**:
@@ -108,7 +108,7 @@ Before deploying, ensure you have:
 
 3. **Push to GitHub**:
    ```bash
-   git remote add origin https://github.com/YOUR_USERNAME/nutribuddy.git
+   git remote add origin https://github.com/YOUR_USERNAME/nutrix.git
    git branch -M main
    git push -u origin main
    ```
@@ -128,11 +128,11 @@ Before deploying, ensure you have:
 
 3. **Connect GitHub Repository**:
    - Authorize Cloudflare to access your GitHub
-   - Select your `nutribuddy` repository
+   - Select your `nutrix` repository
    - Click "Begin setup"
 
 4. **Configure Build Settings**:
-   - **Project name**: nutribuddy (or your choice)
+   - **Project name**: nutrix (or your choice)
    - **Production branch**: main
    - **Framework preset**: Next.js
    - **Build command**: `npm run build`
@@ -155,7 +155,7 @@ Before deploying, ensure you have:
 6. **Deploy**:
    - Click "Save and Deploy"
    - Wait for the build to complete (2-5 minutes)
-   - You'll get a URL like: `https://nutribuddy.pages.dev`
+   - You'll get a URL like: `https://nutrix.pages.dev`
 
 ### Option B: Using Wrangler CLI
 
@@ -176,7 +176,7 @@ Before deploying, ensure you have:
 
 4. **Deploy**:
    ```bash
-   wrangler pages publish out --project-name=nutribuddy
+   wrangler pages publish out --project-name=nutrix
    ```
 
 5. **Set Environment Variables**:
@@ -188,7 +188,7 @@ Before deploying, ensure you have:
 1. **Add Authorized Domains**:
    - In Firebase Console, go to Authentication > Settings > Authorized domains
    - Add your Cloudflare Pages domain:
-     - `nutribuddy.pages.dev`
+     - `nutrix.pages.dev`
      - Any custom domain you'll use
 
 2. **Update CORS Settings (if needed)**:
@@ -276,4 +276,4 @@ For issues:
 
 ---
 
-**Congratulations!** Your NutriBuddy app is now live! 🎉
+**Congratulations!** Your Nutrix app is now live! 🎉

@@ -1,4 +1,4 @@
-# NutriBuddy - Setup Checklist
+# Nutrix - Setup Checklist
 
 Use this checklist to ensure everything is configured correctly.
 
@@ -204,4 +204,4 @@ _________________________________________________
 
 ---
 
-**Congratulations!** When all boxes are checked, your NutriBuddy app is production-ready! 🎉
+**Congratulations!** When all boxes are checked, your Nutrix app is production-ready! 🎉

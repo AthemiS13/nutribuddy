@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { getUserRecipes } from '@/lib/recipe-service';
 import { logMeal } from '@/lib/meal-service';
 import { Recipe } from '@/lib/types';
-import { Plus, Loader2 } from 'lucide-react';
+import { Plus, Loader2, Search, X } from 'lucide-react';
 
 interface MealLogFormProps {
   userId: string;
@@ -19,10 +19,37 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     loadRecipes();
   }, [userId]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.recipe-search-container')) {
+        setShowDropdown(false);
+      }
+    };
+
+    if (showDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showDropdown]);
+
+  // Filter recipes based on search query
+  const filteredRecipes = useMemo(() => {
+    if (!searchQuery.trim()) return recipes;
+    
+    const query = searchQuery.toLowerCase();
+    return recipes.filter(recipe => 
+      recipe.name.toLowerCase().includes(query)
+    );
+  }, [recipes, searchQuery]);
 
   const loadRecipes = async () => {
     try {
@@ -65,6 +92,8 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
       setSelectedRecipe(null);
       setMass('');
       setUseFullRecipe(true);
+      setSearchQuery('');
+      setShowDropdown(false);
       onSuccess();
     } catch (err: any) {
       setError(err.message || 'Failed to log meal');
@@ -117,25 +146,70 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
           </div>
         )}
         
-        <div>
+        <div className="recipe-search-container">
           <label className="block text-sm font-medium text-gray-300 mb-2">Select Recipe</label>
-          <select
-            value={selectedRecipe?.id || ''}
-            onChange={(e) => {
-              const recipe = recipes.find((r) => r.id === e.target.value);
-              setSelectedRecipe(recipe || null);
-              setUseFullRecipe(true);
-              setMass('');
-            }}
-            className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          >
-            <option value="">Choose a recipe...</option>
-            {recipes.map((recipe) => (
-              <option key={recipe.id} value={recipe.id}>
-                {recipe.name} ({recipe.totalNutrients.calories.toFixed(0)} kcal total)
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                value={selectedRecipe ? selectedRecipe.name : searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setShowDropdown(true);
+                  if (selectedRecipe) {
+                    setSelectedRecipe(null);
+                  }
+                }}
+                onFocus={() => setShowDropdown(true)}
+                placeholder="Search recipes..."
+                className="w-full pl-10 pr-10 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              {(searchQuery || selectedRecipe) && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setSelectedRecipe(null);
+                    setShowDropdown(false);
+                  }}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+            </div>
+            
+            {showDropdown && !selectedRecipe && (
+              <div className="absolute z-10 w-full mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                {filteredRecipes.length > 0 ? (
+                  filteredRecipes.map((recipe) => (
+                    <button
+                      key={recipe.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedRecipe(recipe);
+                        setSearchQuery('');
+                        setShowDropdown(false);
+                        setUseFullRecipe(true);
+                        setMass('');
+                      }}
+                      className="w-full px-4 py-3 text-left hover:bg-gray-600 transition border-b border-gray-600 last:border-b-0"
+                    >
+                      <div className="font-medium text-white">{recipe.name}</div>
+                      <div className="text-sm text-gray-400">
+                        {recipe.totalNutrients.calories.toFixed(0)} kcal • {recipe.totalMass}g
+                      </div>
+                    </button>
+                  ))
+                ) : (
+                  <div className="px-4 py-3 text-gray-400 text-center">
+                    No recipes found
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {selectedRecipe && (

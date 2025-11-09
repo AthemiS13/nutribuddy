@@ -1,4 +1,4 @@
-# NutriBuddy - Calorie & Macro Tracker
+# Nutrix - Calorie & Macro Tracker
 
 A comprehensive calorie and macronutrient tracking web application built with Next.js, Firebase, and the USDA FoodData Central API. Designed for deployment on Cloudflare Pages.
 
@@ -40,7 +40,7 @@ A comprehensive calorie and macronutrient tracking web application built with Ne
 
 1. **Clone and install dependencies**:
    ```bash
-   cd nutribuddy
+   cd nutrix
    npm install
    ```
 
@@ -144,7 +144,7 @@ service cloud.firestore {
 ## Project Structure
 
 ```
-nutribuddy/
+nutrix/
 ├── app/                      # Next.js app directory
 │   ├── layout.tsx           # Root layout with AuthProvider
 │   ├── page.tsx             # Main application page

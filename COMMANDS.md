@@ -1,4 +1,4 @@
-# NutriBuddy - Command Reference
+# Nutrix - Command Reference
 
 Quick reference for all npm commands and utilities.
 

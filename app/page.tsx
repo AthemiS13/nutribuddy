@@ -7,6 +7,7 @@ import { ProfileSetup } from '@/components/profile/ProfileSetup';
 import { Dashboard } from '@/components/dashboard/Dashboard';
 import { RecipeForm } from '@/components/recipe/RecipeForm';
 import { MealLogForm } from '@/components/meals/MealLogForm';
+import { SettingsPage } from '@/components/settings/SettingsPage';
 import { getUserProfile } from '@/lib/user-service';
 import { getUserRecipes, deleteRecipe } from '@/lib/recipe-service';
 import { UserProfile, Recipe } from '@/lib/types';
@@ -14,14 +15,13 @@ import {
   Home, 
   BookOpen, 
   PlusCircle, 
-  LogOut, 
   Loader2,
-  UtensilsCrossed,
   Trash2,
-  Edit
+  Edit,
+  Settings
 } from 'lucide-react';
 
-type View = 'dashboard' | 'recipes' | 'log-meal' | 'create-recipe';
+type View = 'dashboard' | 'recipes' | 'log-meal' | 'create-recipe' | 'settings';
 
 export default function HomePage() {
   const { user, loading: authLoading, logout } = useAuth();
@@ -103,12 +103,9 @@ export default function HomePage() {
         <div className="w-full max-w-sm">
           <div className="bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl p-6">
             <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-600 rounded-lg mb-3">
-                <UtensilsCrossed className="w-6 h-6 text-white" />
+              <div className="inline-flex items-center justify-center mb-3">
+                <img src="/nutrix.svg" alt="Nutrix Logo" className="w-96 h-96 brightness-0 invert" />
               </div>
-              <h1 className="text-2xl font-bold text-white mb-1">
-                NutriBuddy
-              </h1>
               <p className="text-zinc-400 text-sm">Track your nutrition, reach your goals</p>
             </div>
             <AuthForms />
@@ -136,22 +133,9 @@ export default function HomePage() {
     <div className="min-h-screen bg-zinc-950 pb-20">
       {/* Header */}
       <header className="bg-zinc-900 border-b border-zinc-800 sticky top-0 z-50">
-        <div className="px-4 py-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <UtensilsCrossed className="w-5 h-5 text-white" />
-              </div>
-              <h1 className="text-lg font-bold text-white">
-                NutriBuddy
-              </h1>
-            </div>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition text-sm"
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
+        <div className="px-4 py-1">
+          <div className="flex items-center justify-center">
+            <img src="/nutrix.svg" alt="Nutrix" className="h-24 brightness-0 invert" />
           </div>
         </div>
       </header>
@@ -278,12 +262,21 @@ export default function HomePage() {
               }}
             />
           )}
+
+          {currentView === 'settings' && (
+            <SettingsPage
+              userId={user.uid}
+              userProfile={userProfile}
+              onUpdate={loadProfile}
+              onLogout={handleLogout}
+            />
+          )}
         </main>
       </div>
 
       {/* Bottom Navigation for Mobile */}
       <nav className="fixed bottom-0 left-0 right-0 bg-zinc-900 border-t border-zinc-800 z-50">
-        <div className="grid grid-cols-3 gap-1 p-2">
+        <div className="grid grid-cols-4 gap-1 p-2">
           <button
             onClick={() => setCurrentView('dashboard')}
             className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition ${
@@ -322,6 +315,20 @@ export default function HomePage() {
           >
             <BookOpen className="w-5 h-5" />
             <span className="text-xs font-medium">Recipes</span>
+          </button>
+          <button
+            onClick={() => {
+              setCurrentView('settings');
+              setEditingRecipe(null);
+            }}
+            className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition ${
+              currentView === 'settings'
+                ? 'bg-blue-600 text-white'
+                : 'text-zinc-400'
+            }`}
+          >
+            <Settings className="w-5 h-5" />
+            <span className="text-xs font-medium">Settings</span>
           </button>
         </div>
       </nav>
