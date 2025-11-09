@@ -98,8 +98,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
     datasets: [
       {
         data: [stats.totalProtein * 4, stats.totalFats * 9, stats.totalCarbohydrates * 4],
-        backgroundColor: ['#3b82f6', '#f59e0b', '#10b981'],
-        borderColor: ['#1e40af', '#d97706', '#059669'],
+        backgroundColor: ['#737373', '#525252', '#404040'],
+        borderColor: ['#a3a3a3', '#737373', '#525252'],
         borderWidth: 2,
       },
     ],
@@ -193,7 +193,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
 
         <div className="bg-neutral-900 p-6 rounded-lg">
           <p className="text-neutral-400 text-sm mb-2">Remaining</p>
-          <p className={`text-3xl font-bold ${remainingCalories >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+          <p className="text-3xl font-bold text-neutral-50">
             {Math.abs(remainingCalories).toFixed(0)}
           </p>
           <p className="text-sm text-neutral-400 mt-2">
