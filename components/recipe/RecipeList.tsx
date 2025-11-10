@@ -26,7 +26,7 @@ export const RecipeList: React.FC<RecipeListProps> = ({ recipes, onEdit, onDelet
           <div className="flex justify-between items-start mb-4">
             <div className="flex-1">
               <h3 className="text-xl font-bold text-neutral-50 mb-1">{recipe.name}</h3>
-              <p className="text-neutral-400 text-sm">{recipe.totalMass}g total</p>
+              <p className="text-neutral-400 text-sm">{recipe.totalMass}g</p>
               <p className="text-neutral-400 text-xs mt-1">
                 {recipe.ingredients.length} ingredient{recipe.ingredients.length !== 1 ? 's' : ''}
               </p>
@@ -51,27 +51,27 @@ export const RecipeList: React.FC<RecipeListProps> = ({ recipes, onEdit, onDelet
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-neutral-800">
             <div>
-              <p className="text-neutral-400 text-xs mb-1">Per 100g</p>
+              <p className="text-neutral-400 text-xs mb-1">Total</p>
               <p className="text-neutral-50 text-lg font-bold">
-                {recipe.nutrientsPer100g.calories.toFixed(0)} kcal
+                {recipe.totalNutrients.calories.toFixed(0)} kcal
               </p>
             </div>
             <div>
               <p className="text-neutral-400 text-xs mb-1">Protein</p>
               <p className="text-neutral-400 text-lg font-semibold">
-                {recipe.nutrientsPer100g.protein.toFixed(1)}g
+                {recipe.totalNutrients.protein.toFixed(1)}g
               </p>
             </div>
             <div>
               <p className="text-neutral-400 text-xs mb-1">Fats</p>
-              <p className="text-yellow-400 text-lg font-semibold">
-                {recipe.nutrientsPer100g.fats.toFixed(1)}g
+              <p className="text-neutral-50 text-lg font-semibold">
+                {recipe.totalNutrients.fats.toFixed(1)}g
               </p>
             </div>
             <div>
               <p className="text-neutral-400 text-xs mb-1">Carbs</p>
-              <p className="text-green-400 text-lg font-semibold">
-                {recipe.nutrientsPer100g.carbohydrates.toFixed(1)}g
+              <p className="text-neutral-50 text-lg font-semibold">
+                {recipe.totalNutrients.carbohydrates.toFixed(1)}g
               </p>
             </div>
           </div>

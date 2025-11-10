@@ -202,7 +202,7 @@ export default function HomePage() {
                       <div className="flex justify-between items-start mb-3">
                         <div>
                           <h3 className="text-lg font-bold text-neutral-50">{recipe.name}</h3>
-                          <p className="text-neutral-400 text-xs">{recipe.totalMass}g total</p>
+                          <p className="text-neutral-400 text-xs">{recipe.totalMass}g</p>
                         </div>
                         <div className="flex gap-1">
                           <button
@@ -226,25 +226,25 @@ export default function HomePage() {
                         <div className="bg-neutral-800 p-3 rounded-lg">
                           <p className="text-neutral-400 text-xs font-medium mb-0.5">Cal</p>
                           <p className="text-neutral-50 text-lg font-bold">
-                            {recipe.nutrientsPer100g.calories.toFixed(0)}
+                            {recipe.totalNutrients.calories.toFixed(0)}
                           </p>
                         </div>
                         <div className="bg-neutral-800 p-3 rounded-lg">
                           <p className="text-neutral-400 text-xs font-medium mb-0.5">Protein</p>
                           <p className="text-neutral-50 text-lg font-bold">
-                            {recipe.nutrientsPer100g.protein.toFixed(1)}g
+                            {recipe.totalNutrients.protein.toFixed(1)}g
                           </p>
                         </div>
                         <div className="bg-neutral-800 p-3 rounded-lg">
                           <p className="text-neutral-400 text-xs font-medium mb-0.5">Fats</p>
                           <p className="text-neutral-50 text-lg font-bold">
-                            {recipe.nutrientsPer100g.fats.toFixed(1)}g
+                            {recipe.totalNutrients.fats.toFixed(1)}g
                           </p>
                         </div>
                         <div className="bg-neutral-800 p-3 rounded-lg">
                           <p className="text-neutral-400 text-xs font-medium mb-0.5">Carbs</p>
                           <p className="text-neutral-50 text-lg font-bold">
-                            {recipe.nutrientsPer100g.carbohydrates.toFixed(1)}g
+                            {recipe.totalNutrients.carbohydrates.toFixed(1)}g
                           </p>
                         </div>
                       </div>

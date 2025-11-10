@@ -224,7 +224,7 @@ export const MealLogForm: React.FC<MealLogFormProps> = ({ userId, onSuccess }) =
                     >
                       <div className="font-medium text-neutral-50">{recipe.name}</div>
                       <div className="text-sm text-neutral-400">
-                        {recipe.totalNutrients.calories.toFixed(0)} kcal • {recipe.totalMass}g
+                        {recipe.totalNutrients.calories.toFixed(0)} kcal • {recipe.totalMass}g • {recipe.totalNutrients.protein.toFixed(1)}g protein
                       </div>
                     </button>
                   ))
