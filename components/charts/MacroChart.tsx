@@ -10,16 +10,13 @@ interface MacroChartProps {
 }
 
 export const MacroChart: React.FC<MacroChartProps> = ({ protein, fats, carbs }) => {
-  // Calculate calories from macros (protein: 4 cal/g, fat: 9 cal/g, carbs: 4 cal/g)
-  const proteinCals = protein * 4;
-  const fatsCals = fats * 9;
-  const carbsCals = carbs * 4;
-  const totalCals = proteinCals + fatsCals + carbsCals;
+  // Use raw gram amounts so the pie visually represents portion by weight (grams)
+  const totalGrams = protein + fats + carbs;
 
   const data = [
-    { name: 'Protein', value: proteinCals, percentage: totalCals > 0 ? ((proteinCals / totalCals) * 100).toFixed(1) : 0 },
-    { name: 'Fats', value: fatsCals, percentage: totalCals > 0 ? ((fatsCals / totalCals) * 100).toFixed(1) : 0 },
-    { name: 'Carbs', value: carbsCals, percentage: totalCals > 0 ? ((carbsCals / totalCals) * 100).toFixed(1) : 0 },
+    { name: 'Protein', value: protein, percentage: totalGrams > 0 ? ((protein / totalGrams) * 100).toFixed(1) : '0' },
+    { name: 'Fats', value: fats, percentage: totalGrams > 0 ? ((fats / totalGrams) * 100).toFixed(1) : '0' },
+    { name: 'Carbs', value: carbs, percentage: totalGrams > 0 ? ((carbs / totalGrams) * 100).toFixed(1) : '0' },
   ];
 
   // Neutral grayscale palette with good contrast: light gray, medium gray, dark gray
