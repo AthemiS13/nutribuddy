@@ -1,6 +1,8 @@
 # Nutrix - Calorie & Macro Tracker
 
 A comprehensive calorie and macronutrient tracking web application built with Next.js, Firebase, and the USDA FoodData Central API. Designed for deployment on Cloudflare Pages.
+![Logo](https://github.com/AthemiS13/nutrix/blob/main/public/nutrix-logo.png)
+
 
 ## Features
 
