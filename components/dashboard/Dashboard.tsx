@@ -143,7 +143,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
               <p className="text-2xl font-bold text-neutral-50">
                 {calorieProgress > 100 ? '✓' : `${Math.round(calorieProgress)}%`}
               </p>
-              <p className="text-xs text-neutral-400 mt-1">{stats.totalCalories > userProfile.dailyCalorieGoal ? 'goal met' : 'to go'}</p>
+              <p className="text-xs text-neutral-400 mt-1">{stats.totalCalories > userProfile.dailyCalorieGoal ? 'goal met' : 'of goal'}</p>
             </div>
           </div>
 
@@ -158,9 +158,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
               />
             </div>
 
-            {stats.totalCalories > userProfile.dailyCalorieGoal && (
-              <p className="text-xs text-neutral-400">+{(stats.totalCalories - userProfile.dailyCalorieGoal).toFixed(0)} kcal over goal</p>
-            )}
+            <p className="text-xs text-neutral-400 mt-1">{stats.totalCalories > userProfile.dailyCalorieGoal ? 'goal met' : 'of goal'}</p>
           </div>
         </div>
       </div>
@@ -209,13 +207,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
               })()}
             </div>
         </div>
-
-        {userProfile.dailyProteinGoal && (
-          <ProteinProgress
-            current={stats.totalProtein}
-            goal={userProfile.dailyProteinGoal}
-          />
-        )}
       </div>
 
       {/* 7-Day Calorie Trend */}

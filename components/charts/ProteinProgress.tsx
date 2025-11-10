@@ -23,12 +23,10 @@ export const ProteinProgress: React.FC<ProteinProgressProps> = ({ current, goal,
           </p>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-bold" style={color ? { color } : undefined}>
+          <p className="text-2xl font-bold text-neutral-50">
             {percentage > 100 ? '✓' : `${Math.round(percentage)}%`}
           </p>
-          <p className="text-xs text-neutral-400 mt-1">
-            {isOver ? 'goal met' : 'to go'}
-          </p>
+          <p className="text-xs text-neutral-400 mt-1">{isOver ? 'goal met' : 'of goal'}</p>
         </div>
       </div>
       
@@ -43,11 +41,7 @@ export const ProteinProgress: React.FC<ProteinProgressProps> = ({ current, goal,
               />
             </div>
         
-        {isOver && (
-          <p className="text-xs text-neutral-400">
-            +{(current - goal).toFixed(1)}g over goal
-          </p>
-        )}
+        {/* don't show explicit over-goal amount per user request */}
       </div>
     </div>
   );
