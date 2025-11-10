@@ -5,9 +5,10 @@ import React from 'react';
 interface ProteinProgressProps {
   current: number;
   goal: number;
+  color?: string;
 }
 
-export const ProteinProgress: React.FC<ProteinProgressProps> = ({ current, goal }) => {
+export const ProteinProgress: React.FC<ProteinProgressProps> = ({ current, goal, color }) => {
   const percentage = goal > 0 ? (current / goal) * 100 : 0;
   const isOver = current > goal;
 
@@ -22,7 +23,7 @@ export const ProteinProgress: React.FC<ProteinProgressProps> = ({ current, goal 
           </p>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-bold text-neutral-50">
+          <p className="text-2xl font-bold" style={color ? { color } : undefined}>
             {percentage > 100 ? '✓' : `${Math.round(percentage)}%`}
           </p>
           <p className="text-xs text-neutral-400 mt-1">
@@ -32,14 +33,15 @@ export const ProteinProgress: React.FC<ProteinProgressProps> = ({ current, goal 
       </div>
       
       <div className="space-y-2">
-        <div className="bg-neutral-800 rounded-full h-3 overflow-hidden">
-          <div
-            className={`h-3 rounded-full transition-all ${
-              isOver ? 'bg-neutral-500' : 'bg-neutral-600'
-            }`}
-            style={{ width: `${Math.min(percentage, 100)}%` }}
-          />
-        </div>
+            <div className="bg-neutral-800 rounded-full h-3 overflow-hidden">
+              <div
+                className={`h-3 rounded-full transition-all ${!color ? (isOver ? 'bg-neutral-500' : 'bg-neutral-600') : ''}`}
+                style={{
+                  width: `${Math.min(percentage, 100)}%`,
+                  backgroundColor: color ?? undefined,
+                }}
+              />
+            </div>
         
         {isOver && (
           <p className="text-xs text-neutral-400">

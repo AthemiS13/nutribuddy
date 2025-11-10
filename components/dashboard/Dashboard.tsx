@@ -104,6 +104,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
     protein: day.totalProtein,
   }));
 
+  const proteinColor = getColorFromPct(proteinProgress ?? 0);
+
   return (
     <div className="space-y-6">
       {/* Date Navigation */}
@@ -163,7 +165,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
         </div>
       </div>
 
-  {/* Macronutrients & Protein (stacked vertically) */}
+        {/* Protein progress directly below Calories as requested */}
+        {userProfile.dailyProteinGoal && (
+          <div className="mt-2">
+            <ProteinProgress
+              current={stats.totalProtein}
+              goal={userProfile.dailyProteinGoal}
+              color={proteinColor}
+            />
+          </div>
+        )}
+    {/* Macronutrients & Protein (stacked vertically) */}
   <div className="grid grid-cols-1 gap-6">
         <div className="bg-neutral-900 p-6 rounded-lg">
           <h3 className="text-lg font-semibold text-neutral-50 mb-4">Macronutrient Distribution</h3>
