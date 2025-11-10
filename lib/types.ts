@@ -6,6 +6,9 @@ export interface UserProfile {
   dailyProteinGoal?: number; // in grams
   targetMonthlyWeightChange?: number; // in kg, positive for gain, negative for loss
   preferredUnit?: 'grams' | 'tablespoons'; // user's preferred measurement unit
+  currentStreak?: number; // consecutive days meeting both calorie and protein goals
+  longestStreak?: number; // all-time longest streak
+  lastStreakDate?: string; // ISO date string of last successful day
   createdAt: string;
   updatedAt: string;
 }

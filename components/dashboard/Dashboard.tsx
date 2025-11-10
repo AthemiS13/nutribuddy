@@ -6,6 +6,8 @@ import { DailyStats, MealLog, UserProfile } from '@/lib/types';
 import { MacroChart } from '@/components/charts/MacroChart';
 import { CalorieChart } from '@/components/charts/CalorieChart';
 import { ProteinProgress } from '@/components/charts/ProteinProgress';
+import { StreakCard } from '@/components/dashboard/StreakCard';
+import { updateStreak, metDailyGoals } from '@/lib/streak-service';
 import { format, subDays } from 'date-fns';
 import { getColorFromPct } from '@/lib/color-utils';
 import { Trash2, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -20,6 +22,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
   const [stats, setStats] = useState<DailyStats | null>(null);
   const [weeklyData, setWeeklyData] = useState<DailyStats[]>([]);
   const [loading, setLoading] = useState(true);
+  const [streakData, setStreakData] = useState({
+    currentStreak: userProfile.currentStreak || 0,
+    longestStreak: userProfile.longestStreak || 0,
+  });
 
   useEffect(() => {
     loadData();
@@ -30,6 +36,15 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
     try {
       const dailyStats = await getDailyStats(userId, currentDate);
       setStats(dailyStats);
+
+      // Update streak if viewing today's date
+      const today = format(new Date(), 'yyyy-MM-dd');
+      const viewingToday = format(currentDate, 'yyyy-MM-dd') === today;
+      
+      if (viewingToday) {
+        const updatedStreak = await updateStreak(userId, dailyStats, userProfile);
+        setStreakData(updatedStreak);
+      }
 
       // Load last 7 days for trend
       const weekData: DailyStats[] = [];
@@ -192,6 +207,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
             </div>
         </div>
       </div>
+
+      {/* Streak Card - below macronutrients */}
+      <StreakCard
+        currentStreak={streakData.currentStreak}
+        longestStreak={streakData.longestStreak}
+        goalsMet={metDailyGoals(stats, userProfile)}
+      />
 
       {/* 7-Day Trends: Calories & Protein */}
       <div className="grid grid-cols-1 gap-4">
