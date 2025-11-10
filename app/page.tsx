@@ -132,14 +132,21 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 pb-24">
-      {/* Header */}
-      <header className="border-b border-neutral-800 sticky top-0 z-50 safe-top" style={{backgroundColor: 'var(--app-bg)'}}>
-        <div className="px-4 py-0.5">
-          <div className="flex items-center justify-center">
-            {/* increase logo by ~10% from 4.4rem -> 4.84rem */}
-            <img src="/nutrix.svg" alt="Nutrix" className="h-[4.84rem] brightness-0 invert" />
-          </div>
+  <div className="min-h-screen bg-neutral-950" style={{paddingTop: 'calc(env(safe-area-inset-top, 0px) + 3.5rem)', paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 3rem)'}}>
+      {/* Header (fixed) */}
+      <header
+        className="fixed top-0 left-0 right-0 z-50 border-b border-neutral-800"
+        style={{
+          backgroundColor: 'var(--app-bg)',
+          // header height = image area (3.5rem) + safe-area inset (dynamic)
+          paddingTop: 'env(safe-area-inset-top)',
+          height: 'calc(env(safe-area-inset-top, 0px) + 3.5rem)',
+          overflow: 'visible'
+        }}
+      >
+        <div className="px-4 h-full flex items-end justify-center relative">
+          {/* larger logo that overflows the header visually */}
+          <img src="/nutrix.svg" alt="Nutrix" className="h-[5.5rem] brightness-0 invert" style={{position: 'relative', bottom: '-0.25rem'}} />
         </div>
       </header>
 
@@ -287,18 +294,18 @@ export default function HomePage() {
         </main>
       </div>
 
-      {/* Bottom Navigation for Mobile */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-neutral-900 border-t border-neutral-800 z-50 safe-bottom anchor-bottom-safe">
-        {/* compact nav: show color-only active state (no boxes) and add a Social tab */}
-  <div className="grid grid-cols-5 gap-0 p-1 pb-1">
+  {/* Bottom Navigation for Mobile (fixed) */}
+  <nav className="fixed bottom-0 left-0 right-0 bg-neutral-900 border-t border-neutral-800 z-50 safe-bottom anchor-bottom-safe" style={{height: 'calc(env(safe-area-inset-bottom, 0px) + 3rem)'}}>
+    {/* compact nav: show color-only active state (no boxes) and add a Social tab */}
+  <div className="grid grid-cols-5 gap-0 h-full items-center">
           <button
             onClick={() => setCurrentView('dashboard')}
             aria-current={currentView === 'dashboard' ? 'page' : undefined}
-            className={`flex flex-col items-center gap-0 px-1 py-1 transition ${
+            className={`flex flex-col items-center justify-center gap-0 px-0 h-full transition ${
               currentView === 'dashboard' ? 'text-neutral-50 font-semibold' : 'text-neutral-400'
             }`}
           >
-            <Home className="w-6 h-6" />
+            <Home className="w-6 h-6 mt-2" />
             <span className="text-[9px]">Dashboard</span>
           </button>
 
@@ -308,11 +315,11 @@ export default function HomePage() {
               setEditingRecipe(null);
             }}
             aria-current={currentView === 'log-meal' ? 'page' : undefined}
-            className={`flex flex-col items-center gap-0 px-1 py-1 transition ${
+            className={`flex flex-col items-center justify-center gap-0 px-0 h-full transition ${
               currentView === 'log-meal' ? 'text-neutral-50 font-semibold' : 'text-neutral-400'
             }`}
           >
-            <PlusCircle className="w-6 h-6" />
+            <PlusCircle className="w-6 h-6 mt-2" />
             <span className="text-[9px]">Log Meal</span>
           </button>
 
@@ -322,11 +329,11 @@ export default function HomePage() {
               setEditingRecipe(null);
             }}
             aria-current={currentView === 'recipes' || currentView === 'create-recipe' ? 'page' : undefined}
-            className={`flex flex-col items-center gap-0 px-1 py-1 transition ${
+            className={`flex flex-col items-center justify-center gap-0 px-0 h-full transition ${
               currentView === 'recipes' || currentView === 'create-recipe' ? 'text-neutral-50 font-semibold' : 'text-neutral-400'
             }`}
           >
-            <BookOpen className="w-6 h-6" />
+            <BookOpen className="w-6 h-6 mt-2" />
             <span className="text-[9px]">Recipes</span>
           </button>
 
@@ -336,11 +343,11 @@ export default function HomePage() {
               setEditingRecipe(null);
             }}
             aria-current={currentView === 'social' ? 'page' : undefined}
-            className={`flex flex-col items-center gap-0 px-1 py-1 transition ${
+            className={`flex flex-col items-center justify-center gap-0 px-0 h-full transition ${
               currentView === 'social' ? 'text-neutral-50 font-semibold' : 'text-neutral-400'
             }`}
           >
-            <Users className="w-6 h-6" />
+            <Users className="w-6 h-6 mt-2" />
             <span className="text-[9px]">Social</span>
           </button>
 
@@ -350,11 +357,11 @@ export default function HomePage() {
               setEditingRecipe(null);
             }}
             aria-current={currentView === 'settings' ? 'page' : undefined}
-            className={`flex flex-col items-center gap-0 px-1 py-1 transition ${
+            className={`flex flex-col items-center justify-center gap-0 px-0 h-full transition ${
               currentView === 'settings' ? 'text-neutral-50 font-semibold' : 'text-neutral-400'
             }`}
           >
-            <Settings className="w-6 h-6" />
+            <Settings className="w-6 h-6 mt-2" />
             <span className="text-[9px]">Settings</span>
           </button>
         </div>

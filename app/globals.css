@@ -54,7 +54,8 @@ nav.safe-bottom {
 	 clipping the interactive area. The translate uses half the inset so
 	 we don't push the nav outside the viewport. */
 nav.safe-bottom {
-	transform: translateY(calc(env(safe-area-inset-bottom, 0px) * 0.5));
+    /* keep nav pinned to bottom exactly; avoid visual downward nudge that can clip or feel too low */
+    transform: translateY(0);
 }
 
 /* Utility to anchor fixed elements to the true bottom in case some browsers
