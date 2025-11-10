@@ -22,28 +22,10 @@ export const MacroChart: React.FC<MacroChartProps> = ({ protein, fats, carbs }) 
     { name: 'Carbs', value: carbsCals, percentage: totalCals > 0 ? ((carbsCals / totalCals) * 100).toFixed(1) : 0 },
   ];
 
-  const COLORS = ['#7ea6d8', '#b39f7a', '#8aa26f'];
+  // Improved, more distinct palette: protein (blue), fats (amber), carbs (green)
+  const COLORS = ['#60a5fa', '#f59e0b', '#34d399'];
 
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-neutral-800 border border-neutral-700 px-3 py-2 rounded shadow-lg">
-          <p className="text-neutral-50 text-sm font-semibold">{payload[0].name}</p>
-          <p className="text-neutral-400 text-sm">
-            {payload[0].value.toFixed(0)} kcal ({payload[0].payload.percentage}%)
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  const [selected, setSelected] = useState<number | null>(null);
-
-  const handleClick = (data: any, index: number) => {
-    // toggle selection on tap/click
-    setSelected((prev) => (prev === index ? null : index));
-  };
+  // static, no tooltip or interaction per new UX
 
   return (
     <div className="w-full h-full min-h-[250px] flex items-center justify-center relative">
@@ -58,26 +40,16 @@ export const MacroChart: React.FC<MacroChartProps> = ({ protein, fats, carbs }) 
             paddingAngle={2}
             dataKey="value"
             label={false}
-            // avoid default active outline by not using activeShape/stroke
-            onClick={handleClick}
             isAnimationActive={false}
           >
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index]} stroke="none" />
             ))}
           </Pie>
-          {/* keep tooltip for hover on desktop, but hide legend; primary reveal is on tap */}
-          <Tooltip content={<CustomTooltip />} cursor={false} />
+          {/* Static pie: no tooltip or interactive legend per request */}
         </PieChart>
       </ResponsiveContainer>
-
-      {/* Center overlay to reveal selected slice info on tap */}
-      {selected !== null && data[selected] && (
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-neutral-900/90 border border-neutral-800 rounded-lg p-3 text-center">
-          <p className="text-neutral-50 font-semibold">{data[selected].name}</p>
-          <p className="text-neutral-400 text-sm">{data[selected].value.toFixed(0)} kcal • {data[selected].percentage}%</p>
-        </div>
-      )}
+      {/* No overlay — figures are shown below the chart in matching colors */}
     </div>
   );
 };

@@ -163,8 +163,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
         </div>
       </div>
 
-      {/* Macronutrients & Protein */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  {/* Macronutrients & Protein (stacked vertically) */}
+  <div className="grid grid-cols-1 gap-6">
         <div className="bg-neutral-900 p-6 rounded-lg">
           <h3 className="text-lg font-semibold text-neutral-50 mb-4">Macronutrient Distribution</h3>
           <div className="h-64">
@@ -174,20 +174,28 @@ export const Dashboard: React.FC<DashboardProps> = ({ userId, userProfile }) => 
               carbs={stats.totalCarbohydrates}
             />
           </div>
-          <div className="mt-4 grid grid-cols-3 gap-4">
-            <div className="text-center">
-              <p className="text-neutral-400 text-xs">Protein</p>
-              <p className="text-neutral-50 text-lg font-bold">{stats.totalProtein.toFixed(1)}g</p>
+            <div className="mt-4 grid grid-cols-3 gap-4">
+              {/* Use same palette as MacroChart for the numeric figures */}
+              {(() => {
+                const MACRO_COLORS = ['#60a5fa', '#f59e0b', '#34d399'];
+                return (
+                  <>
+                    <div className="text-center">
+                      <p className="text-neutral-400 text-xs">Protein</p>
+                      <p className="text-lg font-bold" style={{ color: MACRO_COLORS[0] }}>{stats.totalProtein.toFixed(1)}g</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-neutral-400 text-xs">Fats</p>
+                      <p className="text-lg font-bold" style={{ color: MACRO_COLORS[1] }}>{stats.totalFats.toFixed(1)}g</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-neutral-400 text-xs">Carbs</p>
+                      <p className="text-lg font-bold" style={{ color: MACRO_COLORS[2] }}>{stats.totalCarbohydrates.toFixed(1)}g</p>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
-            <div className="text-center">
-              <p className="text-neutral-400 text-xs">Fats</p>
-              <p className="text-neutral-50 text-lg font-bold">{stats.totalFats.toFixed(1)}g</p>
-            </div>
-            <div className="text-center">
-              <p className="text-neutral-400 text-xs">Carbs</p>
-              <p className="text-neutral-50 text-lg font-bold">{stats.totalCarbohydrates.toFixed(1)}g</p>
-            </div>
-          </div>
         </div>
 
         {userProfile.dailyProteinGoal && (

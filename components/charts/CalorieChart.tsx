@@ -75,6 +75,8 @@ export const CalorieChart: React.FC<CalorieChartProps> = ({ data }) => {
             stroke="#a3a3a3"
             style={{ fontSize: '12px' }}
             tick={{ fill: '#a3a3a3' }}
+            // Keep the left axis non-negative so curves don't render below 0
+            domain={[0, 'dataMax']}
           />
           <YAxis
             yAxisId="right"
@@ -83,11 +85,16 @@ export const CalorieChart: React.FC<CalorieChartProps> = ({ data }) => {
             style={{ fontSize: '12px' }}
             tick={{ fill: '#a3a3a3' }}
             allowDecimals={false}
+            // clamp axis to non-negative values to avoid curves dipping below 0 due
+            // to interpolation overshoot
+            domain={[0, 'dataMax']}
           />
           <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#525252' }} />
           <Legend content={renderLegend} />
+          
           <Line
-            type="natural"
+            // monotone interpolation avoids overshoot/undershoot which can make lines dip below axis
+            type="monotone"
             dataKey="calories"
             stroke="#a3a3a3"
             strokeWidth={2}
@@ -96,7 +103,7 @@ export const CalorieChart: React.FC<CalorieChartProps> = ({ data }) => {
             isAnimationActive={false}
           />
           <Line
-            type="natural"
+            type="monotone"
             dataKey="protein"
             yAxisId="right"
             stroke="#60a5fa"
