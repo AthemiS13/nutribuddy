@@ -293,3 +293,28 @@ nav.safe-bottom {
 	}
 }
 
+/*
+  Hide native scrollbars app-wide while keeping scroll functionality.
+  This removes the visible scrollbar on desktop and mobile. Scrolling
+  still works via touch, mouse wheel, or trackpad. Use with caution.
+*/
+.app-content,
+.recharts-wrapper,
+.recharts-wrapper * {
+	/* Firefox */
+	scrollbar-width: none;
+	/* IE 10+ */
+	-ms-overflow-style: none;
+}
+
+/* WebKit browsers */
+.app-content::-webkit-scrollbar,
+.recharts-wrapper::-webkit-scrollbar,
+.app-content *::-webkit-scrollbar,
+.recharts-wrapper *::-webkit-scrollbar {
+	width: 0;
+	height: 0;
+	background: transparent;
+}
+
+
