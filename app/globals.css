@@ -19,11 +19,12 @@
 	--app-height: 100vh; /* Fallback for older browsers */
 	--app-height: 100dvh; /* Modern browsers with dvh support */
 	
-	/* Define fixed heights for header and nav to calculate content area 
-	   Nav height is just the visual height, safe-area padding is separate */
+	/* Define fixed heights for header and nav to calculate content area.
+	   Use separate variables for visible nav height and safe-area offset. */
 	--header-height: calc(env(safe-area-inset-top, 0px) + 3.5rem);
-	--nav-height: 3rem;
-	--nav-safe-area: env(safe-area-inset-bottom, 0px);
+	/* Visible navigation bar height (excluding safe area) */
+	--nav-height: 3.25rem;
+	--nav-safe-area: 0px;
 }
 
 /* Support for older browsers that don't have dvh */
@@ -38,7 +39,7 @@ html, body, #__next {
 	width: 100%;
 	height: var(--app-height);
 	margin: 0;
-	padding: 0;
+	padding: 0 0 var(--nav-safe-area) 0;
 	overflow: hidden;
 	background-color: var(--app-bg);
 	/* Lock html and body in place - prevent ANY movement */
@@ -148,7 +149,7 @@ nav.safe-bottom {
 .app-content {
 	position: fixed;
 	top: var(--header-height);
-	bottom: calc(var(--nav-height) + var(--nav-safe-area));
+	bottom: var(--nav-height) !important;
 	left: 0;
 	right: 0;
 	overflow-y: auto;
@@ -164,38 +165,86 @@ nav.safe-bottom {
 	transform: translate3d(0, 0, 0);
 }
 
+
 .app-nav {
 	position: fixed;
-	bottom: 0 !important;
 	left: 0;
 	right: 0;
+	bottom: 0 !important;
 	z-index: 1000;
-	height: calc(var(--nav-height) + var(--nav-safe-area));
-	max-height: calc(var(--nav-height) + var(--nav-safe-area));
-	min-height: calc(var(--nav-height) + var(--nav-safe-area));
-	padding-bottom: var(--nav-safe-area);
+	height: var(--nav-height) !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	background-color: rgba(24, 24, 27, 1);
+	border-top: 1px solid rgba(255,255,255,0.08);
+	display: flex;
+	align-items: stretch;
+	justify-content: center;
+	box-sizing: border-box;
 	/* Ensure nav stays put during keyboard transitions */
 	backface-visibility: hidden;
 	-webkit-backface-visibility: hidden;
-	/* Use GPU acceleration and force exact positioning */
 	transform: translate3d(0, 0, 0);
 	-webkit-transform: translate3d(0, 0, 0);
 	will-change: auto;
 	/* Prevent scrolling on nav */
 	touch-action: none;
 	pointer-events: auto;
-	/* Additional positioning */
-	margin: 0;
-	display: flex;
-	align-items: stretch;
+	overflow: hidden;
 }
 
-/* Remove the visible blue focus ring that appears when some SVG/chart
-	 elements receive focus on mobile (tap) or keyboard. We scope this to
-	 Recharts-generated SVGs so we don't remove global focus styles.
-	 Keep in mind removing outlines can hurt keyboard users; we only
-	 remove the ring for visual polish here since the controls have
-	 other accessible affordances. */
+.app-nav__content {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	justify-content: stretch;
+	box-sizing: border-box;
+	padding: 0;
+	position: relative;
+	z-index: 1;
+}
+
+/* Nav buttons: force equal width and minimal vertical footprint */
+.app-nav__content > button {
+	flex: 1 1 0;
+	min-width: 0;
+	display: flex !important;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 0.35rem 0 !important;
+	margin: 0 !important;
+	line-height: 1 !important;
+	height: 100% !important;
+	border: none;
+	background: none;
+	cursor: pointer;
+	gap: 0.125rem;
+}
+
+.app-nav__content > button svg {
+	width: 22px !important;
+	height: 22px !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	flex-shrink: 0;
+}
+
+.app-nav__content > button span {
+	font-size: 0.625rem !important;
+	line-height: 1 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+/* Reset any inherited Tailwind button styles that might add height */
+.app-nav__content > button::before,
+.app-nav__content > button::after {
+	display: none !important;
+}
+
 .recharts-wrapper :focus,
 .recharts-wrapper svg :focus {
 	outline: none !important;

@@ -291,17 +291,16 @@ export default function HomePage() {
       </main>
 
       {/* Bottom Navigation for Mobile (fixed) */}
-      <nav className="app-nav bg-neutral-900 border-t border-neutral-800">
-        {/* compact nav: show color-only active state (no boxes) and add a Social tab */}
-        <div className="grid grid-cols-5 gap-0 w-full items-center" style={{height: '100%'}}>
+      <nav className="app-nav">
+        <div className="app-nav__content">
           <button
             onClick={() => setCurrentView('dashboard')}
             aria-current={currentView === 'dashboard' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-0 px-0 h-full transition ${
+            className={`transition ${
               currentView === 'dashboard' ? 'text-neutral-50 font-semibold' : 'text-neutral-400'
             }`}
           >
-            <Home className="w-6 h-6 mt-2" />
+            <Home className="w-5 h-5" />
             <span className="text-[9px]">Dashboard</span>
           </button>
 
@@ -311,11 +310,11 @@ export default function HomePage() {
               setEditingRecipe(null);
             }}
             aria-current={currentView === 'log-meal' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-0 px-0 h-full transition ${
+            className={`transition ${
               currentView === 'log-meal' ? 'text-neutral-50 font-semibold' : 'text-neutral-400'
             }`}
           >
-            <PlusCircle className="w-6 h-6 mt-2" />
+            <PlusCircle className="w-5 h-5" />
             <span className="text-[9px]">Log Meal</span>
           </button>
 
@@ -325,11 +324,11 @@ export default function HomePage() {
               setEditingRecipe(null);
             }}
             aria-current={currentView === 'recipes' || currentView === 'create-recipe' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-0 px-0 h-full transition ${
+            className={`transition ${
               currentView === 'recipes' || currentView === 'create-recipe' ? 'text-neutral-50 font-semibold' : 'text-neutral-400'
             }`}
           >
-            <BookOpen className="w-6 h-6 mt-2" />
+            <BookOpen className="w-5 h-5" />
             <span className="text-[9px]">Recipes</span>
           </button>
 
@@ -339,11 +338,11 @@ export default function HomePage() {
               setEditingRecipe(null);
             }}
             aria-current={currentView === 'social' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-0 px-0 h-full transition ${
+            className={`transition ${
               currentView === 'social' ? 'text-neutral-50 font-semibold' : 'text-neutral-400'
             }`}
           >
-            <Users className="w-6 h-6 mt-2" />
+            <Users className="w-5 h-5" />
             <span className="text-[9px]">Social</span>
           </button>
 
@@ -353,11 +352,11 @@ export default function HomePage() {
               setEditingRecipe(null);
             }}
             aria-current={currentView === 'settings' ? 'page' : undefined}
-            className={`flex flex-col items-center justify-center gap-0 px-0 h-full transition ${
+            className={`transition ${
               currentView === 'settings' ? 'text-neutral-50 font-semibold' : 'text-neutral-400'
             }`}
           >
-            <Settings className="w-6 h-6 mt-2" />
+            <Settings className="w-5 h-5" />
             <span className="text-[9px]">Settings</span>
           </button>
         </div>
