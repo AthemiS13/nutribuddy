@@ -23,7 +23,7 @@
 	   Use separate variables for visible nav height and safe-area offset. */
 	--header-height: calc(env(safe-area-inset-top, 0px) + 3.5rem);
 	/* Visible navigation bar height (excluding safe area) */
-	--nav-height: 3.25rem;
+	--nav-height: 4.5rem;
 	--nav-safe-area: 0px;
 }
 
@@ -213,27 +213,27 @@ nav.safe-bottom {
 	display: flex !important;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
-	padding: 0.35rem 0 !important;
+	justify-content: flex-start;
+	padding: 0.4rem 0 0 0 !important;
 	margin: 0 !important;
 	line-height: 1 !important;
 	height: 100% !important;
 	border: none;
 	background: none;
 	cursor: pointer;
-	gap: 0.125rem;
+	gap: 0.15rem;
 }
 
 .app-nav__content > button svg {
-	width: 22px !important;
-	height: 22px !important;
+	width: 24px !important;
+	height: 24px !important;
 	margin: 0 !important;
 	padding: 0 !important;
 	flex-shrink: 0;
 }
 
 .app-nav__content > button span {
-	font-size: 0.625rem !important;
+	font-size: 0.55rem !important;
 	line-height: 1 !important;
 	margin: 0 !important;
 	padding: 0 !important;
