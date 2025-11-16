@@ -6,7 +6,7 @@ import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, LabelList } from "rec
 interface CalorieChartProps {
   data: Array<{
     date: string;
-    calories: number;
+    calories?: number;
     goal: number;
     protein?: number;
   }>;

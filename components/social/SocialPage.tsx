@@ -277,46 +277,50 @@ export const SocialPage: React.FC<SocialPageProps> = ({ userId, userProfile, onU
             {/* Charts */}
             <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4">
               <h3 className="text-sm font-semibold text-neutral-50 mb-3">7-Day Calorie Trend</h3>
-              <CalorieChart data={chartCalorieData} />
+              <div className="h-56">
+                <CalorieChart data={chartCalorieData} metric="calories" />
+              </div>
             </div>
 
             {selectedFriend.dailyProteinGoal && (
               <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4">
                 <h3 className="text-sm font-semibold text-neutral-50 mb-3">7-Day Protein Trend</h3>
-                <div className="h-48 flex items-end justify-between gap-2">
-                  {chartProteinData.map((day, idx) => {
-                    const percentage = day.goal > 0 ? (day.protein / day.goal) * 100 : 0;
-                    const height = Math.min(percentage, 100);
-                    return (
-                      <div key={idx} className="flex-1 flex flex-col items-center gap-1">
-                        <div className="text-xs text-neutral-400 mb-1">{Math.round(day.protein)}g</div>
-                        <div className="w-full bg-neutral-800 rounded-t relative flex-1 flex items-end">
-                          <div
-                            className="w-full rounded-t transition-all"
-                            style={{
-                              height: `${height}%`,
-                              backgroundColor: getColorFromPct(percentage),
-                            }}
-                          />
-                        </div>
-                        <div className="text-xs text-neutral-500 mt-1">{day.date}</div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="mt-2 text-center text-xs text-neutral-500">
-                  Goal: {selectedFriend.dailyProteinGoal}g
+                <div className="h-56">
+                  <CalorieChart data={chartProteinData} metric="protein" />
                 </div>
               </div>
             )}
 
             <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4">
               <h3 className="text-sm font-semibold text-neutral-50 mb-3">Macro Distribution</h3>
-              <MacroChart
-                protein={friendStats.totalProtein}
-                carbs={friendStats.totalCarbohydrates}
-                fats={friendStats.totalFats}
-              />
+              <div className="h-64">
+                <MacroChart
+                  protein={friendStats.totalProtein}
+                  carbs={friendStats.totalCarbohydrates}
+                  fats={friendStats.totalFats}
+                />
+              </div>
+              <div className="mt-4 grid grid-cols-3 gap-4">
+                {(() => {
+                  const MACRO_COLORS = ['#e5e5e5', '#a3a3a3', '#525252'];
+                  return (
+                    <>
+                      <div className="text-center">
+                        <p className="text-neutral-400 text-xs">Protein</p>
+                        <p className="text-lg font-bold" style={{ color: MACRO_COLORS[0] }}>{friendStats.totalProtein.toFixed(1)}g</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-neutral-400 text-xs">Fats</p>
+                        <p className="text-lg font-bold" style={{ color: MACRO_COLORS[1] }}>{friendStats.totalFats.toFixed(1)}g</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-neutral-400 text-xs">Carbs</p>
+                        <p className="text-lg font-bold" style={{ color: MACRO_COLORS[2] }}>{friendStats.totalCarbohydrates.toFixed(1)}g</p>
+                      </div>
+                    </>
+                  );
+                })()}
+              </div>
             </div>
 
             {/* Meals */}
