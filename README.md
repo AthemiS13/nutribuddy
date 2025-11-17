@@ -33,7 +33,7 @@ Nutrix is a modern, privacy-friendly calorie and macronutrient tracker built wit
 - Performance: Client caching for USDA results, static export for fast delivery
 
 ## Screenshots & Assets
-Paste hosted image URLs into the placeholders below or commit images under `nutribuddy/public/` and reference with relative paths (e.g., `/nutrix-logo.png`).
+Paste hosted image URLs into the placeholders below or commit images under `public/` and reference with relative paths (e.g., `/nutrix-logo.png`).
 
 ```md
 <!-- Replace <URL> with your image links or /public paths -->
@@ -62,7 +62,6 @@ Optional logo placement:
 
 ## Quick Start
 ```bash
-cd nutribuddy
 npm install
 cp .env.example .env.local
 npm run dev
@@ -70,7 +69,7 @@ npm run dev
 Open http://localhost:3000
 
 ## Environment Variables
-Set the following (see `nutribuddy/.env.example`):
+Set the following (see `.env.example`):
 ```
 NEXT_PUBLIC_FIREBASE_API_KEY=
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
@@ -117,16 +116,17 @@ service cloud.firestore {
 
 ## Project Structure
 ```
-CALORIE-TRACKER/
-├─ nutribuddy/
-│  ├─ app/                 # Next.js App Router (layout, page, globals)
-│  ├─ components/          # UI components (auth, dashboard, meals, recipe, ...)
-│  ├─ contexts/            # React providers (AuthContext)
-│  ├─ lib/                 # firebase, usda-api, services, types, utils
-│  ├─ public/              # static assets
-│  ├─ package.json         # scripts & dependencies
-│  └─ next.config.ts       # output: 'export' (static)
-└─ README.md               # you are here
+Nutrix/
+├─ app/                 # Next.js App Router (layout, page, globals)
+├─ components/          # UI components (auth, dashboard, meals, recipe, ...)
+├─ contexts/            # React providers (AuthContext)
+├─ lib/                 # firebase, usda-api, services, types, utils
+├─ public/              # Static assets
+├─ next.config.ts       # output: 'export' (static)
+├─ package.json         # Scripts & dependencies
+├─ tsconfig.json        # TypeScript config
+├─ .env.example         # Env template
+└─ README.md            # You are here
 ```
 
 ## Architecture Overview
@@ -150,7 +150,7 @@ Simplified data model:
 ```
 
 ## Scripts
-Run inside `nutribuddy/`:
+Run in project root:
 - `npm run dev`: Start dev server
 - `npm run build`: Build static export to `out/`
 - `npm start`: Start production server (SSR not used; export is static)
